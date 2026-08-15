@@ -16,6 +16,8 @@
 
         MaxChatLength = 80,
 
+        StorageGridSize = 80,
+
         MaxGroup = 15,
 
         MaxPets = 5,
@@ -59,6 +61,9 @@
         Spell.IceStorm,
         Spell.MeteorStrike,
         Spell.Blizzard,
-        Spell.SoulFireBall
+        Spell.SoulFireBall,
+        Spell.StraightShot,
+        Spell.ElementalShot,
+        Spell.PoisonShot
     };
 }

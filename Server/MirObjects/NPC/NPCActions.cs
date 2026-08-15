@@ -104,6 +104,17 @@
         Drop,
         ReviveHero,
         SealHero,
-        ConquestRepairAll
+        DeleteHero,
+        ConquestRepairAll,
+        BuyGT,
+        TeleportGT,
+        ExtendGT,
+        GTAllRecall,
+        GTRecall,
+        DisplayGTRentalDays,
+        GTSale,
+        GTCancelSale,
+        HeroGiveSkill,
+        HeroRemoveSkill,
     }
 }

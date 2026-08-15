@@ -71,7 +71,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 1905,
                 Sound = SoundList.ButtonA,
-                Hint = string.Format(GameLanguage.Inventory, CMain.InputKeys.GetKey(KeybindOptions.Inventory))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.InventoryKey), CMain.InputKeys.GetKey(KeybindOptions.Inventory))
             };
             InventoryButton.Click += (o, e) =>
             {
@@ -90,7 +90,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 1902,
                 Sound = SoundList.ButtonA,
-                Hint = string.Format(GameLanguage.Character, CMain.InputKeys.GetKey(KeybindOptions.Equipment))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CharacterKey), CMain.InputKeys.GetKey(KeybindOptions.Equipment))
             };
             CharacterButton.Click += (o, e) =>
             {
@@ -112,7 +112,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 1908,
                 Sound = SoundList.ButtonA,
-                Hint = string.Format(GameLanguage.Skills, CMain.InputKeys.GetKey(KeybindOptions.Skills))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SkillsKey), CMain.InputKeys.GetKey(KeybindOptions.Skills))
             };
             SkillButton.Click += (o, e) =>
             {
@@ -134,7 +134,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 1911,
                 Sound = SoundList.ButtonA,
-                Hint = string.Format(GameLanguage.Quests, CMain.InputKeys.GetKey(KeybindOptions.Quests))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.QuestsKey), CMain.InputKeys.GetKey(KeybindOptions.Quests))
             };
             QuestButton.Click += (o, e) =>
             {
@@ -152,7 +152,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 1914,
                 Sound = SoundList.ButtonA,
-                Hint = string.Format(GameLanguage.Options, CMain.InputKeys.GetKey(KeybindOptions.Options))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.OptionsKey), CMain.InputKeys.GetKey(KeybindOptions.Options))
             };
             OptionButton.Click += (o, e) =>
             {
@@ -170,7 +170,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 1962,
                 Sound = SoundList.ButtonC,
-                Hint = GameLanguage.Menu
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Menu)
             };
             MenuButton.Click += (o, e) =>
             {
@@ -187,7 +187,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 PressedIndex = 828,
                 Sound = SoundList.ButtonC,
-                Hint = string.Format(GameLanguage.GameShop, CMain.InputKeys.GetKey(KeybindOptions.GameShop))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.GameShopKey), CMain.InputKeys.GetKey(KeybindOptions.GameShop))
             };
             GameShopButton.Click += (o, e) =>
             {
@@ -347,7 +347,7 @@ namespace Client.MirScenes.Dialogs
                 });
             };
 
-            HeroInfoPanel = new HeroInfoPanel { Parent = this, Visible = false };            
+            HeroInfoPanel = new HeroInfoPanel { Parent = this, Visible = false };
 
             AModeLabel = new MirLabel
             {
@@ -385,51 +385,51 @@ namespace Client.MirScenes.Dialogs
             switch (GameScene.Scene.AMode)
             {
                 case AttackMode.Peace:
-                    AModeLabel.Text = GameLanguage.AttackMode_Peace;
+                    AModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AttackMode_Peace);
                     break;
                 case AttackMode.Group:
-                    AModeLabel.Text = GameLanguage.AttackMode_Group;
+                    AModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AttackMode_Group);
                     break;
                 case AttackMode.Guild:
-                    AModeLabel.Text = GameLanguage.AttackMode_Guild;
+                    AModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AttackMode_Guild);
                     break;
                 case AttackMode.EnemyGuild:
-                    AModeLabel.Text = GameLanguage.AttackMode_EnemyGuild;
+                    AModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AttackMode_EnemyGuild);
                     break;
                 case AttackMode.RedBrown:
-                    AModeLabel.Text = GameLanguage.AttackMode_RedBrown;
+                    AModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AttackMode_RedBrown);
                     break;
                 case AttackMode.All:
-                    AModeLabel.Text = GameLanguage.AttackMode_All;
+                    AModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AttackMode_All);
                     break;
             }
 
             switch (GameScene.Scene.PMode)
             {
                 case PetMode.Both:
-                    PModeLabel.Text = GameLanguage.PetMode_Both;
+                    PModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PetMode_Both);
                     break;
                 case PetMode.MoveOnly:
-                    PModeLabel.Text = GameLanguage.PetMode_MoveOnly;
+                    PModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PetMode_MoveOnly);
                     break;
                 case PetMode.AttackOnly:
-                    PModeLabel.Text = GameLanguage.PetMode_AttackOnly;
+                    PModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PetMode_AttackOnly);
                     break;
                 case PetMode.None:
-                    PModeLabel.Text = GameLanguage.PetMode_None;
+                    PModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PetMode_None);
                     break;
                 case PetMode.FocusMasterTarget:
-                    PModeLabel.Text = GameLanguage.PetMode_FocusMasterTarget;
+                    PModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PetMode_FocusMasterTarget);
                     break;
             }
 
             switch (Settings.SkillMode)
             {
                 case true:
-                    SModeLabel.Text = "[Skill Mode: ~]";
+                    SModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.SkillModeTilde);
                     break;
                 case false:
-                    SModeLabel.Text = "[Skill Mode: Ctrl]";
+                    SModeLabel.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.SkillModeCtrl);
                     break;
             }
 
@@ -534,6 +534,23 @@ namespace Client.MirScenes.Dialogs
             double percent = MapObject.User.CurrentBagWeight / (double)MapObject.User.Stats[Stat.BagWeight];
             if (percent > 1) percent = 1;
             if (percent <= 0) return;
+
+            // Weight bar art based on fill
+            if (percent <= 0.50)
+            {
+                WeightBar.Library = Libraries.Prguse;
+                WeightBar.Index = 76;
+            }
+            else if (percent <= 0.75)
+            {
+                WeightBar.Library = Libraries.UI_32bit;
+                WeightBar.Index = 473;
+            }
+            else
+            {
+                WeightBar.Library = Libraries.UI_32bit;
+                WeightBar.Index = 472;
+            }
 
             Rectangle section = new Rectangle
             {
@@ -867,7 +884,7 @@ namespace Client.MirScenes.Dialogs
             }
 
             chat.Add(text.Substring(index, text.Length - index));
-            
+
             if (StartIndex == History.Count - LineCount)
                 StartIndex += chat.Count;
 
@@ -988,7 +1005,7 @@ namespace Client.MirScenes.Dialogs
                     }
                     catch(Exception ex)
                     {
-						//Temporary debug to catch unknown error
+                        //Temporary debug to catch unknown error
                         CMain.SaveError(ex.ToString());
                         CMain.SaveError(currentLine);
                         CMain.SaveError(capture.Value);
@@ -1255,7 +1272,7 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(Settings.Resolution != 800 ? 574 : 350, 1),
                 Visible = true,
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Size
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Size)
             };
             SizeButton.Click += (o, e) =>
             {
@@ -1263,6 +1280,9 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(Location.X, GameScene.Scene.ChatDialog.DisplayRectangle.Top - Size.Height);
                 if (GameScene.Scene.BeltDialog.Index == 1932)
                     GameScene.Scene.BeltDialog.Location = new Point(GameScene.Scene.MainDialog.Location.X + 230, Location.Y - GameScene.Scene.BeltDialog.Size.Height);
+
+                if (GameScene.Scene.HeroBeltDialog != null)
+                    GameScene.Scene.HeroBeltDialog.Location = new Point(GameScene.Scene.MainDialog.Location.X + 475, Location.Y - GameScene.Scene.HeroBeltDialog.Size.Height);
             };
 
             SettingsButton = new MirButton
@@ -1274,7 +1294,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(Settings.Resolution != 800 ? 596 : 372, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.ChatSettings
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.ChatSettings)
             };
             SettingsButton.Click += (o, e) =>
             {
@@ -1296,7 +1316,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(12, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_All
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_All)
             };
             NormalButton.Click += (o, e) =>
             {
@@ -1312,7 +1332,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(34, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_Short
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_Short)
             };
             ShoutButton.Click += (o, e) =>
             {
@@ -1328,7 +1348,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(56, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_Whisper
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_Whisper)
             };
             WhisperButton.Click += (o, e) =>
             {
@@ -1344,7 +1364,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(78, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_Lover
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_Lover)
             };
             LoverButton.Click += (o, e) =>
             {
@@ -1360,7 +1380,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(100, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_Mentor
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_Mentor)
             };
             MentorButton.Click += (o, e) =>
             {
@@ -1376,7 +1396,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(122, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_Group
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_Group)
             };
             GroupButton.Click += (o, e) =>
             {
@@ -1392,7 +1412,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(144, 1),
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Chat_Guild
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Chat_Guild)
             };
             GuildButton.Click += (o, e) =>
             {
@@ -1409,7 +1429,7 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(166, 1),
                 Parent = this,
                 Sound = SoundList.ButtonC,
-                Hint = string.Format(GameLanguage.Trade, CMain.InputKeys.GetKey(KeybindOptions.Trade)),
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.TradeKey), CMain.InputKeys.GetKey(KeybindOptions.Trade)),
             };
             TradeButton.Click += (o, e) => Network.Enqueue(new C.TradeRequest());
 
@@ -1422,7 +1442,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Location = new Point(Settings.Resolution != 800 ? 552 : 328, 1),
                 Sound = SoundList.ButtonA,
-                Hint = "Report",
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Report),
                 Visible = false
             };
             ReportButton.Click += (o, e) =>
@@ -1632,7 +1652,7 @@ namespace Client.MirScenes.Dialogs
                 return CMain.InputKeys.GetKey(KeybindOptions.Bar2Skill8);
             return "";
         }
-                    
+
 
         void MagicKeyDialog_BeforeDraw(object sender, EventArgs e)
         {
@@ -1671,8 +1691,8 @@ namespace Client.MirScenes.Dialogs
 
                     //string key = m.Key > 8 ? string.Format("CTRL F{0}", i) : string.Format("F{0}", m.Key);
 
-                    Cells[i - 1].Index = magic.Icon*2;
-                    Cells[i - 1].Hint = string.Format("{0}\nMP: {1}\nCooldown: {2}\nKey: {3}", magic.Name,
+                    Cells[i - 1].Index = magic.Icon * 2;
+                    Cells[i - 1].Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SkillMpCooldownKey), magic.Name,
                         (magic.BaseCost + (magic.LevelCost * magic.Level)), Functions.PrintTimeSpanFromMilliSeconds(magic.Delay), key);
 
                     KeyNameLabels[i - 1].Text = "";
@@ -1703,9 +1723,10 @@ namespace Client.MirScenes.Dialogs
 
                     if (timeLeft < 100)
                     {
-                        if (timeLeft > 0) { 
+                        if (timeLeft > 0)
+                        {
                             CoolDowns[i].Visible = false;
-                           // CoolDowns[i].Dispose();
+                            // CoolDowns[i].Dispose();
                         }
                         else
                             continue;
@@ -1739,7 +1760,7 @@ namespace Client.MirScenes.Dialogs
             Visible = false;
         }
     }
-    
+
     public sealed class MiniMapDialog : MirImageControl
     {
         public MirImageControl LightSetting, NewMail;
@@ -1789,7 +1810,7 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(4, 131),
                 Library = Libraries.Prguse,
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.Mail
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Mail)
             };
             MailButton.Click += (o, e) => GameScene.Scene.MailListDialog.Toggle();
 
@@ -1812,7 +1833,7 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(25, 131),
                 Library = Libraries.Prguse,
                 Sound = SoundList.ButtonA,
-                Hint = string.Format(GameLanguage.BigMap, CMain.InputKeys.GetKey(KeybindOptions.Bigmap))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.BigMapKey), CMain.InputKeys.GetKey(KeybindOptions.Bigmap))
             };
             BigMapButton.Click += (o, e) => GameScene.Scene.BigMapDialog.Toggle();
 
@@ -1825,7 +1846,7 @@ namespace Client.MirScenes.Dialogs
                 Location = new Point(109, 3),
                 Library = Libraries.Prguse,
                 Sound = SoundList.ButtonA,
-                Hint = "MiniMap (" + CMain.InputKeys.GetKey(KeybindOptions.Minimap) + ")"
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MiniMapKey), CMain.InputKeys.GetKey(KeybindOptions.Minimap))
             };
             ToggleButton.Click += (o, e) => Toggle();
 
@@ -1915,10 +1936,8 @@ namespace Client.MirScenes.Dialogs
             int startPointX = (int)(viewRect.X / scaleX);
             int startPointY = (int)(viewRect.Y / scaleY);
 
-            for (int i = MapControl.Objects.Count - 1; i >= 0; i--)
+            foreach (var ob in MapControl.Objects.Values)
             {
-                MapObject ob = MapControl.Objects[i];
-
                 if (ob.Race == ObjectType.Item || ob.Dead || ob.Race == ObjectType.Spell || ob.Sneaking) continue;
                 float x = ((ob.CurrentLocation.X - startPointX) * scaleX) + drawLocation.X;
                 float y = ((ob.CurrentLocation.Y - startPointY) * scaleY) + drawLocation.Y;
@@ -2205,25 +2224,25 @@ namespace Client.MirScenes.Dialogs
             {
                 HoverIndex = 432,
                 Index = 431,
-                Location = new Point(75, 357),
+                Location = new Point(55, 357),
                 Library = Libraries.Prguse,
                 Parent = this,
                 PressedIndex = 433,
                 Sound = SoundList.ButtonA,
-                Hint = "Invite to Group",
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.InviteToGroup),
             };
             GroupButton.Click += (o, e) =>
             {
 
                 if (GroupDialog.GroupList.Count >= Globals.MaxGroup)
                 {
-                    GameScene.Scene.ChatDialog.ReceiveChat("Your group already has the maximum number of members.", ChatType.System);
+                    GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.GroupHasMaxMembers), ChatType.System);
                     return;
                 }
                 if (GroupDialog.GroupList.Count > 0 && GroupDialog.GroupList[0] != MapObject.User.Name)
                 {
 
-                    GameScene.Scene.ChatDialog.ReceiveChat("You are not the leader of your group.", ChatType.System);
+                    GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.YouNotGroupLeader), ChatType.System);
                 }
 
                 Network.Enqueue(new C.AddMember { Name = Name });
@@ -2234,12 +2253,12 @@ namespace Client.MirScenes.Dialogs
             {
                 HoverIndex = 435,
                 Index = 434,
-                Location = new Point(105, 357),
+                Location = new Point(85, 357),
                 Library = Libraries.Prguse,
                 Parent = this,
                 PressedIndex = 436,
                 Sound = SoundList.ButtonA,
-                Hint = "Add to Friends List",
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.AddToFriendsList),
             };
             FriendButton.Click += (o, e) =>
             {
@@ -2250,12 +2269,12 @@ namespace Client.MirScenes.Dialogs
             {
                 HoverIndex = 438,
                 Index = 437,
-                Location = new Point(135, 357),
+                Location = new Point(115, 357),
                 Library = Libraries.Prguse,
                 Parent = this,
                 PressedIndex = 439,
                 Sound = SoundList.ButtonA,
-                Hint = "Send Mail",
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.SendMail),
             };
             MailButton.Click += (o, e) => GameScene.Scene.MailComposeLetterDialog.ComposeMail(Name);
 
@@ -2263,12 +2282,12 @@ namespace Client.MirScenes.Dialogs
             {
                 HoverIndex = 524,
                 Index = 523,
-                Location = new Point(165, 357),
+                Location = new Point(145, 357),
                 Library = Libraries.Prguse,
                 Parent = this,
                 PressedIndex = 525,
                 Sound = SoundList.ButtonA,
-                Hint = "Trade",
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Trade),
             };
             TradeButton.Click += (o, e) => Network.Enqueue(new C.TradeRequest());
 
@@ -2277,16 +2296,22 @@ namespace Client.MirScenes.Dialogs
                 Index = 854,
                 HoverIndex = 855,
                 PressedIndex = 856,
-                Location = new Point(16, 357),
+                Location = new Point(175, 357),
                 Library = Libraries.Title,
                 Parent = this,
                 Sound = SoundList.ButtonA,
-                Visible = false,
-                Hint = "Observe",
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.Observe),
             };
             ObserveButton.Click += (o, e) =>
             {
-                Network.Enqueue(new C.Observe { Name = Name });
+                if (AllowObserve)
+                {
+                    Network.Enqueue(new C.Observe { Name = Name });
+                }
+                else
+                {
+                    GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.PlayerDisabledObservation), ChatType.System);
+                }
             };
 
             NameLabel = new MirLabel
@@ -2486,7 +2511,9 @@ namespace Client.MirScenes.Dialogs
                 GameScene.Bind(Items[i]);
             }
 
-            ObserveButton.Visible = AllowObserve;
+            //ObserveButton.Visible = AllowObserve; //Use this to allow observe button to be shown only if the player has Observe Enabled, pressing this wont bypass Observe being false.
+
+            ObserveButton.Visible = !IsHero;
 
             TradeButton.Visible = !IsHero;
             MailButton.Visible = !IsHero;
@@ -2666,7 +2693,7 @@ namespace Client.MirScenes.Dialogs
             HPViewOn.Click += (o, e) =>
             {
                 Settings.HPView = true;
-                GameScene.Scene.ChatDialog.ReceiveChat("[HP/MP Mode 1]", ChatType.Hint);
+                GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.HpMpMode1), ChatType.Hint);
             };
 
             HPViewOff = new MirButton
@@ -2681,7 +2708,7 @@ namespace Client.MirScenes.Dialogs
             HPViewOff.Click += (o, e) =>
             {
                 Settings.HPView = false;
-                GameScene.Scene.ChatDialog.ReceiveChat("[HP/MP Mode 2]", ChatType.Hint);
+                GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.HpMpMode2), ChatType.Hint);
             };
 
             SoundBar = new MirImageControl
@@ -2738,7 +2765,7 @@ namespace Client.MirScenes.Dialogs
             NewMoveOn.Click += (o, e) =>
             {
                 Settings.NewMove = true;
-                GameScene.Scene.ChatDialog.ReceiveChat("[New Movement Style]", ChatType.Hint);
+                GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.NewMovementStyle), ChatType.Hint);
             };
 
             NewMoveOff = new MirButton
@@ -2753,7 +2780,7 @@ namespace Client.MirScenes.Dialogs
             NewMoveOff.Click += (o, e) =>
             {
                 Settings.NewMove = false;
-                GameScene.Scene.ChatDialog.ReceiveChat("[Old Movement Style]", ChatType.Hint);
+                GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.OldMovementStyle), ChatType.Hint);
             };
 
             ObserveOn = new MirButton
@@ -2970,7 +2997,7 @@ namespace Client.MirScenes.Dialogs
                 ObserveOff.Index = 459;
             }
             else
-            {        
+            {
                 ObserveOn.Index = 456;
                 ObserveOff.Index = 461;
             }
@@ -3012,7 +3039,7 @@ namespace Client.MirScenes.Dialogs
                 Library = Libraries.Title,
                 Location = new Point(3, 12),
                 PressedIndex = 635,
-                Hint = string.Format(GameLanguage.Exit, CMain.InputKeys.GetKey(KeybindOptions.Exit))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ExitKey), CMain.InputKeys.GetKey(KeybindOptions.Exit))
             };
             ExitButton.Click += (o, e) => GameScene.Scene.QuitGame();
 
@@ -3024,7 +3051,7 @@ namespace Client.MirScenes.Dialogs
                 Library = Libraries.Title,
                 Location = new Point(3, 31),
                 PressedIndex = 638,
-                Hint = string.Format(GameLanguage.LogOut, CMain.InputKeys.GetKey(KeybindOptions.Logout))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.LogOutKey), CMain.InputKeys.GetKey(KeybindOptions.Logout))
             };
             LogOutButton.Click += (o, e) => GameScene.Scene.LogOut();
 
@@ -3037,7 +3064,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse,
                 Location = new Point(3, 50),
-                Hint = string.Format(GameLanguage.Help, CMain.InputKeys.GetKey(KeybindOptions.Help))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HelpKey), CMain.InputKeys.GetKey(KeybindOptions.Help))
             };
             HelpButton.Click += (o, e) =>
             {
@@ -3055,7 +3082,7 @@ namespace Client.MirScenes.Dialogs
                 Library = Libraries.Prguse,
                 Location = new Point(3, 69),
                 Visible = true,
-                Hint = "Keyboard (" + CMain.InputKeys.GetKey(KeybindOptions.Keybind) + ")"
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.KeyboardKeybind), CMain.InputKeys.GetKey(KeybindOptions.Keybind))
             };
             KeyboardLayoutButton.Click += (o, e) =>
             {
@@ -3072,7 +3099,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse,
                 Location = new Point(3, 88),
-                Hint = string.Format(GameLanguage.Ranking, CMain.InputKeys.GetKey(KeybindOptions.Ranking))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.RankingKey), CMain.InputKeys.GetKey(KeybindOptions.Ranking))
                 //Visible = false
             };
             RankingButton.Click += (o, e) =>
@@ -3105,7 +3132,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse2,
                 Location = new Point(3, 126),
-                Hint = string.Format(GameLanguage.Creatures, CMain.InputKeys.GetKey(KeybindOptions.Creature))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CreaturesKey), CMain.InputKeys.GetKey(KeybindOptions.Creature))
             };
             IntelligentCreatureButton.Click += (o, e) =>
             {
@@ -3121,7 +3148,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse,
                 Location = new Point(3, 145),
-                Hint = string.Format(GameLanguage.Mount, CMain.InputKeys.GetKey(KeybindOptions.MountWindow))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MountKey), CMain.InputKeys.GetKey(KeybindOptions.MountWindow))
             };
             RideButton.Click += (o, e) =>
             {
@@ -3138,7 +3165,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse,
                 Location = new Point(3, 164),
-                Hint = string.Format(GameLanguage.Fishing, CMain.InputKeys.GetKey(KeybindOptions.Fishing))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FishingKey), CMain.InputKeys.GetKey(KeybindOptions.Fishing))
             };
             FishingButton.Click += (o, e) =>
             {
@@ -3156,7 +3183,7 @@ namespace Client.MirScenes.Dialogs
                 Library = Libraries.Prguse,
                 Location = new Point(3, 183),
                 Visible = true,
-                Hint = string.Format(GameLanguage.Friends, CMain.InputKeys.GetKey(KeybindOptions.Friends))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FriendsKey), CMain.InputKeys.GetKey(KeybindOptions.Friends))
             };
             FriendButton.Click += (o, e) =>
             {
@@ -3174,7 +3201,7 @@ namespace Client.MirScenes.Dialogs
                 Library = Libraries.Prguse,
                 Location = new Point(3, 202),
                 Visible = true,
-                Hint = string.Format(GameLanguage.Mentor, CMain.InputKeys.GetKey(KeybindOptions.Mentor))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MentorKey), CMain.InputKeys.GetKey(KeybindOptions.Mentor))
             };
             MentorButton.Click += (o, e) =>
             {
@@ -3193,7 +3220,7 @@ namespace Client.MirScenes.Dialogs
                 Library = Libraries.Prguse,
                 Location = new Point(3, 221),
                 Visible = true,
-                Hint = string.Format(GameLanguage.Relationship, CMain.InputKeys.GetKey(KeybindOptions.Relationship))
+                Hint = string.Format(   GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.RelationshipKey), CMain.InputKeys.GetKey(KeybindOptions.Relationship))
             };
             RelationshipButton.Click += (o, e) =>
             {
@@ -3210,7 +3237,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse,
                 Location = new Point(3, 240),
-                Hint = string.Format(GameLanguage.Groups, CMain.InputKeys.GetKey(KeybindOptions.Group))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.GroupsKey), CMain.InputKeys.GetKey(KeybindOptions.Group))
             };
             GroupButton.Click += (o, e) =>
             {
@@ -3227,7 +3254,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Library = Libraries.Prguse,
                 Location = new Point(3, 259),
-                Hint = string.Format(GameLanguage.Guild, CMain.InputKeys.GetKey(KeybindOptions.Guilds))
+                Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.GuildKey), CMain.InputKeys.GetKey(KeybindOptions.Guilds))
             };
             GuildButton.Click += (o, e) =>
             {
@@ -3400,267 +3427,329 @@ namespace Client.MirScenes.Dialogs
             switch (magic.Spell)
             {  //Warrior
                 case Spell.Fencing:
-                    SkillButton.Hint = string.Format("Fencing \n\nHitting accuracy will be increased in accordance\nwith practice level.\nPassive Skill\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FencingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
                     break;
                 case Spell.Slaying:
-                    SkillButton.Hint = string.Format("Slaying \n\nHitting accuracy and destructive power will\nbe increased in accordance with practive level.\nPassive Skill\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SlayingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
                     break;
                 case Spell.Thrusting:
-                    SkillButton.Hint = string.Format("Dark Damage\nThrusting \n\nIncreases the reach of your hits destructive power\nwill increase in accordance with practive level.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ThrustingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
                     break;
                 case Spell.Rage:
-                    SkillButton.Hint = string.Format("Rage \n\nMana Cost {2}\n\nEnhances your inner force to increase its power\nfor a certain time. Attack power and duration time\nwill depend on the skill level. Once the skill has been used\n you will have to wait to use it again.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.RageSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.ProtectionField:
-                    SkillButton.Hint = string.Format("ProtectionField \n\nMana Cost {2}\n\nConcentrates inner force and spreads it to all\n the parts of your body. This will enhance the\nprotection from enemies. Defense power and duration\nwill be depend on the skill level. Once the skill\n has been used, you will have to wait to use it again.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ProtectionFieldSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.HalfMoon:
-                    SkillButton.Hint = string.Format("Wind Damage\nHalfMoon \n\nCause damage to mobs in a semi circle with\nthe shock waves from your fast moving weapon.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HalfMoonSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FlamingSword:
-                    SkillButton.Hint = string.Format("Fire Damage\nFlamingSword \n\nCause additional damage by summoning the spirit\nof fire into weapon\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FlamingSwordSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.ShoulderDash:
-                    SkillButton.Hint = string.Format("ShoulderDash \n\nA warrior can push away mobs by charging\nthem with his shoulder, inflicting damage\nif they hit any obstacle.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ShoulderDashSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.CrossHalfMoon:
-                    SkillButton.Hint = string.Format("Wind Damage\nCrossHalfMoon \n\nA warrior uses two powerfull waves of Half Moon\nto inflict damage on all mobs stood next to them.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CrossHalfMoonSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.TwinDrakeBlade:
-                    SkillButton.Hint = string.Format("Dark Damage\nTwinDrakeBlade \n\nThe art of making multiple power attacks. It has a\nlow chance of stunning the mob temporarly. Stunned\nmobs get 1.5 times more damage inflicted.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.TwinDrakeBladeSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Entrapment:
-                    SkillButton.Hint = string.Format("Entrapment \n\nParalyses mobs and draws them to the caster.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.EntrapmentSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.LionRoar:
-                    SkillButton.Hint = string.Format("LionRoar \n\nParalyses mobs , duration increases with skill level.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.LionRoarSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.CounterAttack:
-                    SkillButton.Hint = string.Format("CounterAttack \n\nMana Cost {2}\n\nIncreases AC and AMC for a short period of time\nChance to defend an attack and counter.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CounterAttackSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.ImmortalSkin:
-                    SkillButton.Hint = string.Format("ImmortalSkin \n\nMana Cost {2}\n\nIncrease defense to reduce attacks.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ImmortalSkinSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Fury:
-                    SkillButton.Hint = string.Format("Fury \n\nMana Cost {2}\n\nIncreases the warriors Accuracy for a set period of time.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FurySkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SlashingBurst:
-                    SkillButton.Hint = string.Format("SlashingBurst \n\nMana Cost {2}\n\nAllows The Warrior to Jump 1 Space Over a Obejct or Monster.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SlashingBurstSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.BladeAvalanche:
-                    SkillButton.Hint = string.Format("Ice Damage\nBladeAvalanche \n\n3-Way Thrusting.\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.BladeAvalancheSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
+
                 //Wizard
                 case Spell.FireBall:
-                    SkillButton.Hint = string.Format("Fireball \n\nInstant Casting\nMana Cost {2}\n\nElements of fire are gathered to form\na fireball. Throw at monsters for damage.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FireballSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.ThunderBolt:
-                    SkillButton.Hint = string.Format("Thundebolt \n\nInstant Casting\nMana Cost {2}\n\nStrikes the foe with a lightning bolt \ninflicting high damage.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ThunderboltSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.GreatFireBall:
-                    SkillButton.Hint = string.Format("GreatFireBall \n\nInstant Casting\nMana Cost {2}\n\nStronger then fire ball, Great Fire Ball\nwill fire up the mobs.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.GreatFireballSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Repulsion:
-                    SkillButton.Hint = string.Format("Repulsion \n\nInstant Casting\nMana Cost {2}\n\nPush away mobs useing the power of fire.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.RepulsionSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.HellFire:
-                    SkillButton.Hint = string.Format("Hellfire \n\nInstant Casting\nMana Cost {2}\n\nShoots out a streak of fire attack\nthe monster in front.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HellfireSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Lightning:
-                    SkillButton.Hint = string.Format("Lightning \n\nInstant Casting\nMana Cost {2}\n\nShoots out a steak of lightning to attack\nthe monster in front.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.LightningSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.ElectricShock:
-                    SkillButton.Hint = string.Format("ElectrickShock \n\nInstant Casting\nMana Cost {2}\n\nStrong shock wave hits the mob and the\nmob will not be able to move or the mob\nwill get confused and fight for you.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ElectricShockSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Teleport:
-                    SkillButton.Hint = string.Format("Teleport \n\nInstant Casting\nMana Cost {2}\n\nTeleport to a random spot.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.TeleportSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FireWall:
-                    SkillButton.Hint = string.Format("FireWall \n\nInstant Casting\nMana Cost {2}\n\nThis skill will build a fire wall at a designated\nspot to attack the monster passing the area.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FireWallSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FireBang:
-                    SkillButton.Hint = string.Format("FireBang \n\nInstant Casting\nMana Cost {2}\n\nFirebang will burst out fire at a designated spot to\nburn all the monster within the area.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FireBangSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.ThunderStorm:
-                    SkillButton.Hint = string.Format("Thunderstorm \n\nInstant Casting\nMana Cost {2}\n\nThis skill will make a thunder storm with in a designated area \nto attack the monster with in.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ThunderstormSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MagicShield:
-                    SkillButton.Hint = string.Format("MagicShield \n\nInstant Casting\nMana Cost {2}\n\nThis skill will use Mp to create protective\nlayer around you\nAttack will be absorbed by the protective layer\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MagicShieldSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.TurnUndead:
-                    SkillButton.Hint = string.Format("TurnUndead \n\nInstant Casting\nMana Cost {2}\n\nThis magic will bring birght light into \npower and attack undead monsters\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.TurnUndeadSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.IceStorm:
-                    SkillButton.Hint = string.Format("IceStorm \n\nInstant Castin\nMana Cost {2}\n\nThis skill will make an ice storm with in a designated \narea to attack the monsters with in\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.IceStormSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FlameDisruptor:
-                    SkillButton.Hint = string.Format("FlameDisruptor \n\nInstant Casting\nMana Cost {2}\n\nFlame from the underground will be brought\ninto surface to attack the mobs.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FlameDisruptorSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FrostCrunch:
-                    SkillButton.Hint = string.Format("FrostCrunch \n\nInstant Casting\nMana Cost {2}\n\nFreeze the elements in the air around the \nmonster to slow them down\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FrostCrunchSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Mirroring:
-                    SkillButton.Hint = string.Format("Mirroring \n\nInstant Casting\nMana Cost {2}\n\nCreate a mirror image of yourself to attack\nthe monsters together\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MirroringSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FlameField:
-                    SkillButton.Hint = string.Format("FlameField \n\nInstant Casting\nMana Cost {2}\n\nA powerful spell of fire is used to \ndamage surrounding enemies.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FlameFieldSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Vampirism:
-                    SkillButton.Hint = string.Format("Vampirism \n\nInstant Casting\nMana Cost {2}\n\nUsing Mp take away monsters Hp to\nincrease your Hp.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.VampirismSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Blizzard:
-                    SkillButton.Hint = string.Format("Blizzard \n\nChanneling Casting\nMana Cost {2}\n\nConcentrate inner force and spreads it to all\nthe parts of your body.This will enhance the\nprotection from enemies. Defense power and duration\ntime will depend on the skill level. Once the skill\nhas been used, you will have to wait to use it again.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.BlizzardSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MeteorStrike:
-                    SkillButton.Hint = string.Format("MeteorStrike \n\nChanneling Casting\nMana Cost {2}\n\nAttacks all monsters within 5x5 square area with lumps \nof fire falling from the sky.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MeteorStrikeSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.IceThrust:
-                    SkillButton.Hint = string.Format("IceThrust \n\nInstant CastingMana Cost {2}\n\nAttack monsters by creating an ice pillar.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.IceThrustSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MagicBooster:
-                    SkillButton.Hint = string.Format("MagicBooster \n\nLasting EffectMana Cost {2}\n\nIncrease magical damage, but comsume additional MP.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MagicBoosterSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FastMove:
-                    SkillButton.Hint = string.Format("FastMove \n\nChanneling Casting\nMana Cost {2}\n\nIncrease movemoent with rooted skills.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FastMoveSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.StormEscape:
-                    SkillButton.Hint = string.Format("StormEscape \n\nChanneling Casting\nMana Cost {2}\n\nParalyze nearby enemies and teleport to the designated location.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.StormEscapeSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Blink:
-                    SkillButton.Hint = string.Format("Blink \n\nInstant Casting\nMana Cost {2}\n\nTeleport to a random spot near you.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.BlinkSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
+
                 //Taoist
                 case Spell.SpiritSword:
-                    SkillButton.Hint = string.Format("SpiritSword \n\nIncreases the chance of hitting the target in\n melee combat.\nPassive Skill\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SpiritSwordSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Healing:
-                    SkillButton.Hint = string.Format("Healing \n\nInstant Casting\nMana Cost {2}\n\nHeals a single target \nrecovering HP over time.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HealingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Poisoning:
-                    SkillButton.Hint = string.Format("Poisoning \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Poison Powder\n\nThrow poison at mobs to weaken them.\nUse green poison to weaken Hp.\nUse red poison to weaken defense.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PoisoningSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SoulFireBall:
-                    SkillButton.Hint = string.Format("SoulFireBall \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nPut power into a scroll and throw it at \na mob. The scroll will burst into fire.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SoulFireBallSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SoulShield:
-                    SkillButton.Hint = string.Format("SoulShield \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nBless the partymembers to strengthen there magic\ndefence.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SoulShieldSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.BlessedArmour:
-                    SkillButton.Hint = string.Format("BlessedArmour \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nBless the partymemebers to strenghten there defence.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.BlessedArmourSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.TrapHexagon:
-                    SkillButton.Hint = string.Format("TrapHexagon \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nTrap the monster with this magical power\n to stop them from moving. Any damages\nfrom outside source will allow the monsters\nto move again.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.TrapHexagonSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SummonSkeleton:
-                    SkillButton.Hint = string.Format("SummonSkeleton \n\n\nInstant Casting\nMana Cost {2}\n\nSummons a Powerful AOE Skeleton, Which will Fight Side By Side With You\n\nRequired Items: Amulet.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SummonSkeletonSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Hiding:
-                    SkillButton.Hint = string.Format("Hiding \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nMobs will not be able to spot you for a short\nmoment.Mobs will notice you if you start\nto move around.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HidingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MassHiding:
-                    SkillButton.Hint = string.Format("MassHiding \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nMobs will not be able to spot you or your \nparty members for a short moment. \nMobs will notice you and your party if \nyou start to move around.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MassHidingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Revelation:
-                    SkillButton.Hint = string.Format("Revelation \n\nInstant Casting\nMana Cost {2}\n\nYou will be able to read Hp of others\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.RevelationSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MassHealing:
-                    SkillButton.Hint = string.Format("MassHealing \n\nInstant Casting\nMana Cost {2}\n\nHeal all injured players in the specified\narea by surrounding them with mana.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MassHealingSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SummonShinsu:
-                    SkillButton.Hint = string.Format("SummonShinsu \n\nInstant Casting\nMana Cost {2}\n\nSummons a Dog, That Will fight Side By Side with you.\nRequired Items: Amulet.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SummonShinsuSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.UltimateEnhancer:
-                    SkillButton.Hint = string.Format("UltimateEnhancer \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nAbsorb the energy from the surroundings to increase the stats.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.UltimateEnhancerSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.EnergyRepulsor:
-                    SkillButton.Hint = string.Format("EnergyRepulsor \n\nInstant Casting\nMana Cost {2}\n\nConcentrate your energy for one big blast to push away the monsters around you.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.EnergyRepulsorSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Purification:
-                    SkillButton.Hint = string.Format("Purification \n\nInstant Casting\nMana Cost {2}\n\nHelp others to recover from poisoning and\nparalysis useing this skill.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PurificationSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SummonHolyDeva:
-                    SkillButton.Hint = string.Format("SummonHolyDeva \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nSummon a holy spirit.This holy spirit will\nuse strong thunder to attack monsters.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SummonHolyDevaSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Curse:
-                    SkillButton.Hint = string.Format("Curse \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet + Poison\n\nReduces mob attacks (Attack Speed, DC ,MC ,SC)\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CurseSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Hallucination:
-                    SkillButton.Hint = string.Format("Hallucination \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nThe monster will only see hallucination \nand attack anyone on the way\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HallucinationSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Reincarnation:
-                    SkillButton.Hint = string.Format("Reincarnation \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nRevives a dead players\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ReincarnationSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.PoisonCloud:
-                    SkillButton.Hint = string.Format("PoisonCloud \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: GreenPoison\n\nThrow the amulet and a very strong\npoison cloud will appear in the area.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PoisonCloudSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.EnergyShield:
-                    SkillButton.Hint = string.Format("EnergyShield \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet\n\nCreate an enegy shield to heal immediately when attacked by monsters.\nCurrent Skill Level {0}\n\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.EnergyShieldSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Plague:
-                    SkillButton.Hint = string.Format("Plague \n\nInstant Casting\nMana Cost {2}\n\nRequired Items: Amulet + Poison\n\nDecreases targets MP and inflict target with various debuffs\nExample: Stun , Curse , Poison and Slow.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PlagueSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.HealingCircle:
-                    SkillButton.Hint = string.Format("HealingCircle \n\nInstant Casting\nMana Cost {2}\n\nTreatment area friendly target, and the enemy caused spell damage.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HealingCircleSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.PetEnhancer:
-                    SkillButton.Hint = string.Format("PetEnhancer \n\nInstant Casting\nMana Cost {2}\n\nStrengthening pets defense and power.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PetEnhancerSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
 
                 //Assassin
                 case Spell.FatalSword:
-                    SkillButton.Hint = string.Format("FatalSword \n\nIncrease attack damage on the monsters.\nalso increases accuracy a little.\nPassive Skill\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FatalSwordPassiveSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.DoubleSlash:
-                    SkillButton.Hint = string.Format("DoubleSlash \n\nMana Cost {2}\n\nSlash the monster twice in a quick motion\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.DoubleSlashToggleSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Haste:
-                    SkillButton.Hint = string.Format("Haste \n\nMana Cost {2}\n\nIncrease the attack speed\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HasteBuffSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FlashDash:
-                    SkillButton.Hint = string.Format("FlashDash \n\nMana Cost {2}\n\nAttack a monster with quick slash and\nparalize the monster\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FlashDashSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.HeavenlySword:
-                    SkillButton.Hint = string.Format("HeavenlySword \n\nMana Cost {2}\n\nAttack monsters with in 2 steps radius\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HeavenlySwordSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.FireBurst:
-                    SkillButton.Hint = string.Format("FireBurst \n\nMana Cost {2}\n\nPush away mobs surrounding you\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FireBurstSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Trap:
-                    SkillButton.Hint = string.Format("Trap \n\nInstant casting CoolTime 60 secs\n\nMana Cost {2}\n\nTrap the monster for a short while.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.TrapSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MoonLight:
-                    SkillButton.Hint = string.Format("Moonlight \n\nMana Cost {2}\n\nHide yourself from monster by turning invisible\nGreater damage is done when you attack monster using\nthis skill.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MoonlightSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MPEater:
-                    SkillButton.Hint = string.Format("MpEater \n\nPassive\nMana Cost {2}\n\nAbsord monsters MP to recharge your MP\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MPEaterSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.SwiftFeet:
-                    SkillButton.Hint = string.Format("SwiftFeet \n\nMana Cost {2}\n\nIncreased Runing Speed\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SwiftFeetSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.LightBody:
-                    SkillButton.Hint = string.Format("LightBody \n\nMana Cost {2}\n\nLighten your body using this skill and move faster\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.LightBodySkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.PoisonSword:
-                    SkillButton.Hint = string.Format("PoisonSword \n\nMana Cost {2}\n\nPoison the monsters with a slash of you\nsword.Poison effect will damage the monster\nover time.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PoisonSwordSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.DarkBody:
-                    SkillButton.Hint = string.Format("DarkBody \n\nMana Cost {2}\n\nCreate an illusion of yourself to attack\nthe monster while you become invisible.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.DarkBodySkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.CrescentSlash:
-                    SkillButton.Hint = string.Format("CrescentSlash \n\nMana Cost {2}\n\nBurst out of the power of your sword and attack all monsters around you.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CrescentSlashSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.Hemorrhage:
-                    SkillButton.Hint = string.Format("Hemorrhage \n\nMana Cost {2}\n\nPassive\nChance to deal cristical damage and inflict bleeding damage.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.HemorrhageSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
                 case Spell.MoonMist:
-                    SkillButton.Hint = string.Format("Moon Mist\nActive\n\nMana Cost {2}\n\nAbility to hide your self from Monster\nYour first attack will be stronger than normal.\n\nCurrent Skill Level {0}\nNext Level {1}", Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MoonMistSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
                     break;
+
+                //Archer
+                case Spell.Focus:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.FocusSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.StraightShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.StraightShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.DoubleShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.DoubleShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.ExplosiveTrap:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ExplosiveTrapSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.DelayedExplosion:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.DelayedExplosionSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.Meditation:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.MeditationSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.BackStep:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.BackStepSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.ElementalShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ElementalShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.Concentration:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ConcentrationSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.Stonetrap:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.StoneTrapSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.ElementalBarrier:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.ElementalBarrierSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.SummonVampire:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SummonVampireSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.VampireShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.VampireShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.SummonToad:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SummonToadSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.PoisonShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.PoisonShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.CrippleShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CrippleShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.SummonSnakes:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SummonSnakesSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.NapalmShot:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.NapalmShotSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+                case Spell.OneWithNature:
+                    SkillButton.Hint = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.OneWithNatureSkillDescription), Magic.Level, Magic.Level == 0 ? Magic.Level1 : Magic.Level == 1 ? Magic.Level2 : Magic.Level == 2 ? Magic.Level3 : 0, Magic.BaseCost);
+                    break;
+
 
                 default:
 
                     break;
             }
-            
+
 
             SkillButton.Index = Magic.Icon * 2;
             SkillButton.PressedIndex = Magic.Icon * 2 + 1;
@@ -3731,7 +3820,7 @@ namespace Client.MirScenes.Dialogs
                 Parent = this,
                 Size = new Size(230, 32),
                 DrawFormat = TextFormatFlags.HorizontalCenter | TextFormatFlags.WordBreak,
-                Text = string.Format(GameLanguage.SelectKey, magic.Name)
+                Text = GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.SelectKey), magic.Name)
             };
 
             NoneButton = new MirButton
@@ -3831,7 +3920,7 @@ namespace Client.MirScenes.Dialogs
                 HoverIndex = 2111,
                 PressedIndex = 2112,
                 Sound = SoundList.ButtonA,
-                Hint = GameLanguage.DuraPanel
+                Hint = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.DuraPanel)
             };
             Character.Click += (o, e) =>
             {

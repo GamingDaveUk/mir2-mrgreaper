@@ -1,3 +1,4 @@
+using System.Drawing;
 ﻿using Server.MirEnvir;
 using Server.MirObjects;
 
@@ -30,11 +31,22 @@ namespace Server.MirDatabase
 
         public bool NeedSave = false;
 
+        public DateTime GTRent = DateTime.MinValue;
+        public DateTime GTBegin = DateTime.MinValue;
+        public int GTIndex = -1;
+        public int GTKey = 0;
+        public int GTPrice;
         protected static Envir Envir
         {
             get { return Envir.Main; }
         }
-
+        public bool HasGT
+        {
+            get
+            {
+                return GTRent > DateTime.Now;
+            }
+        }
         public GuildInfo(PlayerObject owner, string name)
         {
             Name = name;
@@ -56,7 +68,7 @@ namespace Server.MirDatabase
             if (Name == Settings.NewbieGuild)
             {
                 MemberCap = Settings.NewbieGuildMaxSize;
-                Level = 1;
+                Level = 21;
             }
             else if(Level < Settings.Guild_MembercapList.Count)
             {
@@ -163,6 +175,15 @@ namespace Server.MirDatabase
                 FlagImage = reader.ReadUInt16();
                 FlagColour = Color.FromArgb(reader.ReadInt32());
             }
+
+            if (version > 110)
+            {
+                GTRent = DateTime.FromBinary(reader.ReadInt64());
+                GTIndex = reader.ReadInt32();
+                GTKey = reader.ReadInt32();
+                GTPrice = reader.ReadInt32();
+                GTBegin = DateTime.FromBinary(reader.ReadInt64());
+            }
         }
 
         public void Save(BinaryWriter writer)
@@ -225,7 +246,12 @@ namespace Server.MirDatabase
 
             writer.Write(FlagImage);
             writer.Write(FlagColour.ToArgb());
-        }
 
+            writer.Write(GTRent.ToBinary());
+            writer.Write(GTIndex);
+            writer.Write(GTKey);
+            writer.Write(GTPrice);
+            writer.Write(GTBegin.ToBinary());
+        }
     }
 }

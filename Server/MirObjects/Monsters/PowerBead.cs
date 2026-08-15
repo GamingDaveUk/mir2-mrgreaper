@@ -1,3 +1,4 @@
+using System.Drawing;
 ﻿using Server.MirDatabase;
 using Server.MirEnvir;
 using S = ServerPackets;
@@ -143,23 +144,9 @@ namespace Server.MirObjects.Monsters
 
         public override Packet GetInfo()
         {
-            return new S.ObjectMonster
-            {
-                ObjectID = ObjectID,
-                Name = Name,
-                NameColour = NameColour,
-                Location = CurrentLocation,
-                Image = Info.Image,
-                Direction = Direction,
-                Effect = Info.Effect,
-                AI = Info.AI,
-                Light = Info.Light,
-                Dead = Dead,
-                Skeleton = Harvested,
-                Poison = CurrentPoison,
-                Hidden = Hidden,
-                Extra = Summoned,
-            };
+            var packet = (S.ObjectMonster)base.GetInfo();
+            packet.Extra = Summoned;
+            return packet;
         }
 
         public static bool SpawnRandom(MonsterObject owner, Point spawn)

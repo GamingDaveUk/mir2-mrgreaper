@@ -79,7 +79,7 @@ namespace Client
 
         private void CMain_Load(object sender, EventArgs e)
         {
-            this.Text = GameLanguage.GameName;
+            this.Text = GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.GameName);
             try
             {
                 ClientSize = new Size(Settings.ScreenWidth, Settings.ScreenHeight);
@@ -106,11 +106,13 @@ namespace Client
                 while (AppStillIdle)
                 {
                     UpdateTime();
-                    UpdateFrameTime();
                     UpdateEnviroment();
 
                     if (IsDrawTime())
+                    {
                         RenderEnvironment();
+                        UpdateFrameTime();
+                    }
                 }
 
             }
@@ -342,11 +344,11 @@ namespace Client
 
         private static bool IsDrawTime()
         {
-            const int TargetUpdates = 1000 / 60; // 60 frames per second
+            int targetUpdates = 1000 / Math.Max(1, Settings.MaxFPS);
 
             if (Time >= _drawTime)
             {
-                _drawTime = Time + TargetUpdates;
+                _drawTime = Time + targetUpdates;
                 return true;
             }
             return false;
@@ -391,7 +393,7 @@ namespace Client
                     return;
                 }
 
-                DXManager.Device.Clear(ClearFlags.Target, Color.CornflowerBlue, 0, 0);
+                DXManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
                 DXManager.Device.BeginScene();
                 DXManager.Sprite.Begin(SpriteFlags.AlphaBlend);
                 DXManager.SetSurface(DXManager.MainSurface);
@@ -505,7 +507,7 @@ namespace Client
                     DebugTextLabel = null;
                 }
 
-                Program.Form.Text = $"{GameLanguage.GameName} - {text}";
+                Program.Form.Text = $"{GameLanguage.ClientTextMap.GetLocalization(ClientTextKeys.GameName)} - {text}";
             }
         }
 
@@ -570,6 +572,8 @@ namespace Client
             Settings.FullScreen = !Settings.FullScreen;
 
             Program.Form.FormBorderStyle = Settings.FullScreen || Settings.Borderless ? FormBorderStyle.None : FormBorderStyle.FixedDialog;
+
+            Program.Form.TopMost = Settings.FullScreen;
 
             DXManager.Parameters.Windowed = !Settings.FullScreen;
 
@@ -652,9 +656,9 @@ namespace Client
             DXManager.Device.Present();
             DXManager.ResetDevice();
 
-            Program.Form.CenterToScreen();
+            if (!Settings.FullScreen)
+                Program.Form.CenterToScreen();
         }
-            
 
         #region ScreenCapture
 
@@ -696,7 +700,7 @@ namespace Client
         {
             if (CMain.Time < GameScene.LogTime && !Settings.UseTestConfig && !GameScene.Observing)
             {
-                GameScene.Scene.ChatDialog.ReceiveChat(string.Format(GameLanguage.CannotLeaveGame, (GameScene.LogTime - CMain.Time) / 1000), ChatType.System);
+                GameScene.Scene.ChatDialog.ReceiveChat(GameLanguage.ClientTextMap.GetLocalization((ClientTextKeys.CannotLeaveGame) , (GameScene.LogTime - CMain.Time) / 1000), ChatType.System);
                 e.Cancel = true;
             }
             else

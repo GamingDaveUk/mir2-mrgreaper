@@ -1,3 +1,4 @@
+using System.Drawing;
 using Server.MirEnvir;
 
 namespace Server.MirDatabase
@@ -18,11 +19,14 @@ namespace Server.MirDatabase
         public string FileName = string.Empty, Title = string.Empty;
         public ushort MiniMap, BigMap, Music;
         public LightSetting Light;
-        public byte MapDarkLight = 0, MineIndex = 0;
+        public byte MapDarkLight = 0, MineIndex = 0, GTIndex = 0;
 
         public bool NoTeleport, NoReconnect, NoRandom, NoEscape, NoRecall, NoDrug, NoPosition, NoFight,
-            NoThrowItem, NoDropPlayer, NoDropMonster, NoNames, NoMount, NeedBridle, Fight, NeedHole, Fire, Lightning, 
-            NoTownTeleport, NoReincarnation;
+            NoThrowItem, NoDropPlayer, NoDropMonster, NoNames, NoMount, NeedBridle, Fight, NeedHole, Fire, Lightning,
+            NoTownTeleport, NoReincarnation, GT, NoExperience, NoGroup = false, NoPets, NoIntelligentCreatures, NoHero, RequiredGroup = false, FireWallLimit;
+
+        public int RequiredGroupSize = 0, FireWallCount = 0;
+
 
         public string NoReconnectMap = string.Empty;
         public int FireDamage, LightningDamage;
@@ -33,6 +37,7 @@ namespace Server.MirDatabase
         public List<NPCInfo> NPCs = new List<NPCInfo>();
         public List<MineZone> MineZones = new List<MineZone>();
         public List<Point> ActiveCoords = new List<Point>();
+        public WeatherSetting WeatherParticles = WeatherSetting.None;
 
         public MapInfo()
         {
@@ -45,7 +50,7 @@ namespace Server.MirDatabase
             FileName = reader.ReadString();
             Title = reader.ReadString();
             MiniMap = reader.ReadUInt16();
-            Light = (LightSetting) reader.ReadByte();
+            Light = (LightSetting)reader.ReadByte();
 
             BigMap = reader.ReadUInt16();
 
@@ -63,7 +68,7 @@ namespace Server.MirDatabase
 
             NoTeleport = reader.ReadBoolean();
             NoReconnect = reader.ReadBoolean();
-            NoReconnectMap = reader.ReadString();           
+            NoReconnectMap = reader.ReadString();
 
             NoRandom = reader.ReadBoolean();
             NoEscape = reader.ReadBoolean();
@@ -93,6 +98,29 @@ namespace Server.MirDatabase
             NoTownTeleport = reader.ReadBoolean();
             if (Envir.LoadVersion < 79) return;
             NoReincarnation = reader.ReadBoolean();
+
+            if (Envir.LoadVersion >= 110)
+            {
+                WeatherParticles = (WeatherSetting)reader.ReadUInt16();
+            }
+
+            if (Envir.LoadVersion >= 111)
+            {
+                GT = reader.ReadBoolean();
+                GTIndex = reader.ReadByte();
+            }
+            if (Envir.LoadVersion >= 114)
+            {
+                NoExperience = reader.ReadBoolean();
+                NoGroup = reader.ReadBoolean();
+                NoPets = reader.ReadBoolean();
+                NoIntelligentCreatures = reader.ReadBoolean();
+                NoHero = reader.ReadBoolean();
+                RequiredGroupSize = reader.ReadInt32();
+                RequiredGroup = reader.ReadBoolean();
+                FireWallLimit = reader.ReadBoolean();
+                FireWallCount = reader.ReadInt32();
+            }
         }
 
         public void Save(BinaryWriter writer)
@@ -147,6 +175,21 @@ namespace Server.MirDatabase
             writer.Write(Music);
             writer.Write(NoTownTeleport);
             writer.Write(NoReincarnation);
+
+            writer.Write((UInt16)WeatherParticles);
+
+            writer.Write(GT);
+            writer.Write(GTIndex);
+
+            writer.Write(NoExperience);
+            writer.Write(NoGroup);
+            writer.Write(NoPets);
+            writer.Write(NoIntelligentCreatures);
+            writer.Write(NoHero);
+            writer.Write(RequiredGroupSize);
+            writer.Write(RequiredGroup);
+            writer.Write(FireWallLimit);
+            writer.Write(FireWallCount);
 
         }
 
@@ -299,6 +342,11 @@ namespace Server.MirDatabase
 
             info.Index = ++EditEnvir.MapIndex;
             EditEnvir.MapInfoList.Add(info);
+        }
+        public static string GetMapTitleByIndex(int index) // For Players Online tab
+        {
+            var mapInfo = Envir.MapInfoList.FirstOrDefault(m => m.Index == index);
+            return mapInfo != null ? mapInfo.Title : $"UnknownMap({index})";
         }
     }
 }

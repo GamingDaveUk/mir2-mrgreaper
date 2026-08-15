@@ -1,3 +1,4 @@
+using System.Drawing;
 ﻿using Server.MirDatabase;
 using Server.MirEnvir;
 using S = ServerPackets;
@@ -317,9 +318,9 @@ namespace Server.MirObjects.Monsters
                         case ObjectType.Monster:
                         case ObjectType.Player:
                             //Only targets
-                            if (target.IsAttackTarget((PlayerObject)Master))
+                            if (Master is HumanObject humanOb && target.IsAttackTarget(humanOb))
                             {
-                                target.Attacked((PlayerObject)Master, damage, DefenceType.AC, false);
+                                target.Attacked(humanOb, damage, DefenceType.AC, false);
                             }
                             break;
                     }

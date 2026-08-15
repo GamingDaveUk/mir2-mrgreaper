@@ -16,7 +16,7 @@ public class ItemInfo
 
     public ushort Image, Durability;
 
-    public uint Price; 
+    public uint Price;
     public ushort StackSize = 1;
 
     public bool StartItem;
@@ -55,13 +55,13 @@ public class ItemInfo
         {
             string temp = Name;
             temp = Regex.Replace(temp, @"\d+$", string.Empty); //hides end numbers
-            temp = Regex.Replace(temp, @"\[[^]]*\]", string.Empty); //hides square brackets
+            temp = Regex.Replace(temp, @"\[[^\]]*\]", string.Empty); //hides square brackets
 
             return temp;
         }
     }
 
-    public ItemInfo() 
+    public ItemInfo()
     {
         Stats = new Stats();
     }
@@ -239,8 +239,8 @@ public class ItemInfo
         if (CanMine) bools |= 0x10;
         if (GlobalDropNotify) bools |= 0x20;
         writer.Write(bools);
-        
-        writer.Write((short)Bind);        
+
+        writer.Write((short)Bind);
         writer.Write((short)Unique);
 
         writer.Write(RandomStatsId);
@@ -282,7 +282,7 @@ public class UserItem
     public ItemInfo Info;
     public ushort CurrentDura, MaxDura;
     public ushort Count = 1,
-                GemCount = 0;
+        GemCount = 0;
 
     public RefinedValue RefinedValue = RefinedValue.None;
     public byte RefineAdded = 0;
@@ -316,7 +316,7 @@ public class UserItem
 
     public int Weight
     {
-        get { return Info.Type == ItemType.Amulet ? Info.Weight : Info.Weight * Count; }
+        get { return (Info.Type == ItemType.Amulet || Info.Type == ItemType.Bait) ? Info.Weight : Info.Weight * Count; }
     }
 
     public string FriendlyName
@@ -324,13 +324,15 @@ public class UserItem
         get { return Count > 1 ? string.Format("{0} ({1})", Info.FriendlyName, Count) : Info.FriendlyName; }
     }
 
+    public bool GMMade { get; set; }
+
     public UserItem(ItemInfo info)
     {
         SoulBoundId = -1;
         ItemIndex = info.Index;
         Info = info;
         AddedStats = new Stats();
-
+        
         SetSlotSize();
     }
     public UserItem(BinaryReader reader, int version = int.MaxValue, int customVersion = int.MaxValue)
@@ -448,6 +450,11 @@ public class UserItem
         {
             SealedInfo = new SealedInfo(reader, version, customVersion);
         }
+
+        if (version > 107)
+        {
+            GMMade = reader.ReadBoolean();
+        }
     }
 
     public void Save(BinaryWriter writer)
@@ -459,7 +466,7 @@ public class UserItem
         writer.Write(MaxDura);
 
         writer.Write(Count);
-       
+
         writer.Write(SoulBoundId);
         byte Bools = 0;
         if (Identified) Bools |= 0x01;
@@ -497,6 +504,8 @@ public class UserItem
 
         writer.Write(SealedInfo != null);
         SealedInfo?.Save(writer);
+
+        writer.Write(GMMade);
     }
 
     public int GetTotal(Stat type)
@@ -690,7 +699,8 @@ public class UserItem
             RentalInformation = RentalInformation,
             SealedInfo = SealedInfo,
 
-            IsShopItem = IsShopItem
+            IsShopItem = IsShopItem,
+            GMMade = GMMade
         };
 
         return item;
@@ -810,8 +820,8 @@ public class GameShopItem
         Date = DateTime.FromBinary(reader.ReadInt64());
         if (version > 105)
         {
-            CanBuyGold = reader.ReadBoolean();
             CanBuyCredit = reader.ReadBoolean();
+            CanBuyGold = reader.ReadBoolean();
         }
 
     }
@@ -871,8 +881,8 @@ public class Awake
     public static byte Awake_HelmetRate = 1;
     public static byte Awake_ArmorRate = 5;
     public static byte AwakeChanceMin = 1;
-    public static float[] AwakeMaterialRate = new float[4] { 1.0F, 1.0F, 1.0F, 1.0F };
-    public static byte[] AwakeChanceMax = new byte[4] { 1, 2, 3, 4 };
+    public static float[] AwakeMaterialRate = new float[5] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+    public static byte[] AwakeChanceMax = new byte[5] { 1, 2, 3, 4, 5 };
     public static List<List<byte>[]> AwakeMaterials = new List<List<byte>[]>();
 
     public AwakeType Type = AwakeType.None;
@@ -1108,6 +1118,7 @@ public class ItemSets
 {
     public ItemSet Set;
     public List<ItemType> Type;
+
     private byte Amount
     {
         get
@@ -1161,8 +1172,8 @@ public class ItemSets
         get
         {
             return Count >= Amount;
-        }
     }
+}
 }
 
 
@@ -1241,6 +1252,7 @@ public class RandomItemStat
         AccuracyStatChance = 20;
         AccuracyMaxStat = 2;
     }
+
     public void SetArmour()
     {
         MaxDuraChance = 2;
@@ -1294,6 +1306,7 @@ public class RandomItemStat
         MaxScStatChance = 20;
         MaxScMaxStat = 7;
     }
+
     public void SetBeltBoots()
     {
         MaxDuraChance = 2;
@@ -1324,6 +1337,7 @@ public class RandomItemStat
         AgilityStatChance = 30;
         AgilityMaxStat = 3;
     }
+
     public void SetNecklace()
     {
         MaxDuraChance = 2;
@@ -1350,6 +1364,7 @@ public class RandomItemStat
         AgilityStatChance = 30;
         AgilityMaxStat = 7;
     }
+
     public void SetBracelet()
     {
         MaxDuraChance = 2;
@@ -1376,6 +1391,7 @@ public class RandomItemStat
         MaxScStatChance = 30;
         MaxScMaxStat = 6;
     }
+
     public void SetRing()
     {
         MaxDuraChance = 2;

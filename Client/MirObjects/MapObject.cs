@@ -20,12 +20,12 @@ namespace Client.MirObjects
         private static uint mouseObjectID;
         public static uint MouseObjectID
         {
-            get { return mouseObjectID; }
+            get => mouseObjectID;
             set
             {
                 if (mouseObjectID == value) return;
                 mouseObjectID = value;
-                MouseObject = MapControl.Objects.Find(x => x.ObjectID == value);
+                MouseObject = MapControl.Objects.TryGetValue(value, out var obj) ? obj : null;
             }
         }
 
@@ -33,25 +33,25 @@ namespace Client.MirObjects
         private static uint targetObjectID;
         public static uint TargetObjectID
         {
-            get { return targetObjectID; }
+            get => targetObjectID;
             set
             {
                 if (targetObjectID == value) return;
-                lastTargetObjectId = targetObjectID;
+                lastTargetObjectId = value;
                 targetObjectID = value;
-                TargetObject = MapControl.Objects.Find(x => x.ObjectID == value);
+                TargetObject = MapControl.Objects.TryGetValue(value, out var obj) ? obj : null;
             }
         }
 
         private static uint magicObjectID;
         public static uint MagicObjectID
         {
-            get { return magicObjectID; }
+            get => magicObjectID;
             set
             {
                 if (magicObjectID == value) return;
                 magicObjectID = value;
-                MagicObject = MapControl.Objects.Find(x => x.ObjectID == value);
+                MagicObject = MapControl.Objects.TryGetValue(value, out var obj) ? obj : null;
             }
         }
 
@@ -143,27 +143,29 @@ namespace Client.MirObjects
         {
             ObjectID = objectID;
 
-            for (int i = MapControl.Objects.Count - 1; i >= 0; i--)
-            {
-                MapObject ob = MapControl.Objects[i];
-                if (ob.ObjectID != ObjectID) continue;
-                ob.Remove();
-            }
+            if (MapControl.Objects.TryGetValue(ObjectID, out var existingObject))
+                existingObject.Remove();
 
-            MapControl.Objects.Add(this);
-
+            MapControl.Objects[ObjectID] = this;
+            MapControl.ObjectsList.Add(this);
             RestoreTargetStates();
         }
+
         public void Remove()
         {
             if (MouseObject == this) MouseObjectID = 0;
-            if (TargetObject == this) TargetObjectID = 0;
+            if (TargetObject == this)
+            {
+                TargetObjectID = 0;
+                lastTargetObjectId = ObjectID;
+            }
             if (MagicObject == this) MagicObjectID = 0;
 
             if (this == User.NextMagicObject)
                 User.ClearMagic();
 
-            MapControl.Objects.Remove(this);
+            MapControl.Objects.Remove(ObjectID);
+            MapControl.ObjectsList.Remove(this);
             GameScene.Scene.MapControl.RemoveObject(this);
 
             if (ObjectID == Hero?.ObjectID)
@@ -190,11 +192,20 @@ namespace Client.MirObjects
             if (MagicObjectID == ObjectID)
                 MagicObject = this;
 
-            /*if (TargetObject == null)
+            if (!this.Dead &&
+                TargetObject == null &&
+                LastTargetObjectId == ObjectID)
             {
-                if (lastTargetObjectId == ObjectID)
-                    TargetObject = this;
-            }*/
+                switch (Race)
+                {
+                    case ObjectType.Player:
+                    case ObjectType.Monster:
+                    case ObjectType.Hero:
+                        targetObjectID = ObjectID;
+                        TargetObject = this;
+                        break;
+                }
+            }
         }
 
         public void AddBuffEffect(BuffType type)
@@ -245,14 +256,14 @@ namespace Client.MirObjects
                     };
                     break;
                 case BuffType.MagicBooster:
-					Effects.Add(new BuffEffect(Libraries.Magic3, 90, 6, 1200, this, true, type) { Repeat = true });
+                    Effects.Add(new BuffEffect(Libraries.Magic3, 90, 6, 1200, this, true, type) { Repeat = true });
                     break;
                 case BuffType.PetEnhancer:
                     Effects.Add(new BuffEffect(Libraries.Magic3, 230, 6, 1200, this, true, type) { Repeat = true });
                     break;
-				case BuffType.GameMaster:
-					Effects.Add(new BuffEffect(Libraries.CHumEffect[5], 0, 1, 1200, this, true, type) { Repeat = true });
-					break;
+                case BuffType.GameMaster:
+                    Effects.Add(new BuffEffect(Libraries.CHumEffect[5], 0, 1, 1200, this, true, type) { Repeat = true });
+                    break;
                 case BuffType.GeneralMeowMeowShield:
                     Effects.Add(new BuffEffect(Libraries.Monsters[(ushort)Monster.GeneralMeowMeow], 529, 7, 700, this, true, type) { Repeat = true, Light = 1 });
                     MirSounds.SoundManager.PlaySound(8322);
@@ -416,8 +427,8 @@ namespace Client.MirObjects
             CreateLabel();
 
             if (NameLabel == null) return;
-            
-            NameLabel.Text = Name;
+
+            //NameLabel.Text = Name; //When CreateLabel() is called, the name is already determined, so there's no need to assign it every time in DrawName.
             NameLabel.Location = new Point(DisplayRectangle.X + (50 - NameLabel.Size.Width) / 2, DisplayRectangle.Y - (32 - NameLabel.Size.Height / 2) + (Dead ? 35 : 8)); //was 48 -
             NameLabel.Draw();
         }
@@ -470,13 +481,25 @@ namespace Client.MirObjects
             switch (Race)
             {
                 case ObjectType.Player:
-                    if (GroupDialog.GroupList.Contains(name)) index = 10;
+                    index = 12;
+                    if (GroupDialog.GroupList.Contains(name) && name != User.Name) index = 10;
                     break;
                 case ObjectType.Monster:
                     if (GroupDialog.GroupList.Contains(name) || name == User.Name) index = 11;
                     break;
                 case ObjectType.Hero:
-                    if (GroupDialog.GroupList.Contains(name) || name == GameScene.Hero.Name) index = 11;
+                    if (GroupDialog.GroupList.Contains(MapObject.HeroObject?.OwnerName)) // Fails but not game breaking
+                    {
+                        index = 11;
+                    }
+                    if (HeroObject.HeroObject?.OwnerName == User.Name)
+                    {
+                        index = 1;
+                        if ((MapObject.HeroObject.Class != MirClass.Warrior && HeroObject.Level > 7) || (MapObject.HeroObject.Class == MirClass.Warrior && HeroObject.Level > 25))
+                        {
+                            Libraries.Prguse2.Draw(10, new Rectangle(0, 0, (int)(32 * PercentMana / 100F), 4), new Point(DisplayRectangle.X + 8, DisplayRectangle.Y - 60), Color.White, false);
+                        }
+                    }
                     break;
             }
 

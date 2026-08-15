@@ -654,6 +654,12 @@ namespace Client.MirObjects
                     case 100: //Oma King Robe effect
                         Effects.Add(new SpecialEffect(Libraries.Effect, 352, 33, 3600, this, true, false, 0) { Repeat = true });
                         break;
+						case 101://Black Dragon Armour  Fire effect
+                        Effects.Add(new SpecialEffect(Libraries.CHumEffect[4], 0, 10, 1500, this, true, false, 0u)
+                       {
+                        Repeat = true
+                        });
+                      break;
                 }
             }
 
@@ -685,47 +691,47 @@ namespace Client.MirObjects
 
             if (LevelEffects.HasFlag(LevelEffects.Rebirth1))
             {
-                Effects.Add(new SpecialEffect(Libraries.Effect, 1271, 36, 3600, this, true, false, 1) { Repeat = true });
+                Effects.Add(new SpecialEffect(Libraries.Magic3, 6800, 20, 3600, this, true, false, 1) { Repeat = true });
 
 
             }
 
             if (LevelEffects.HasFlag(LevelEffects.Rebirth2))
             {
-                Effects.Add(new SpecialEffect(Libraries.Effect, 1308, 38, 3600, this, true, false, 1) { Repeat = true });
-                SpecialEffect effect = new SpecialEffect(Libraries.Effect, 1347, 39, 3600, this, true, true, 1) { Repeat = true, Delay = delay };
+                Effects.Add(new SpecialEffect(Libraries.Magic3, 6870, 19, 3600, this, true, true, 1) { Repeat = true });
+                SpecialEffect effect = new SpecialEffect(Libraries.Magic3, 6840, 22, 3600, this, true, false, 1) { Repeat = true, Delay = delay };
                 effect.SetStart(CMain.Time + delay);
                 Effects.Add(effect);
             }
 
             if (LevelEffects.HasFlag(LevelEffects.Rebirth3))
             {
-                Effects.Add(new SpecialEffect(Libraries.Effect, 1409, 19, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
-                SpecialEffect effect = new SpecialEffect(Libraries.Effect, 1444, 25, 4600, this, true, true, 1) { Repeat = true };
+                Effects.Add(new SpecialEffect(Libraries.Magic3, 6906, 19, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
+                SpecialEffect effect = new SpecialEffect(Libraries.Magic3, 6930, 29, 3600, this, true, true, 1) { Repeat = true };
 
                 Effects.Add(effect);
             }
 
             if (LevelEffects.HasFlag(LevelEffects.NewBlue))
             {
-                Effects.Add(new SpecialEffect(Libraries.Effect, 1574, 31, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
-                SpecialEffect effect = new SpecialEffect(Libraries.Effect, 1621, 24, 3600, this, true, true, 1) { Repeat = true };
+                Effects.Add(new SpecialEffect(Libraries.Magic3, 7040, 31, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
+                SpecialEffect effect = new SpecialEffect(Libraries.Magic3,7080, 24, 3600, this, true, true, 1) { Repeat = true };
 
                 Effects.Add(effect);
             }
 
             if (LevelEffects.HasFlag(LevelEffects.YellowDragon))
             {
-                Effects.Add(new SpecialEffect(Libraries.Effect, 1486, 32, 4600, this, true, false, 1) { Repeat = true, Delay = delay });
-                SpecialEffect effect = new SpecialEffect(Libraries.Effect, 1534, 24, 4600, this, true, true, 1) { Repeat = true };
+                Effects.Add(new SpecialEffect(Libraries.Magic3, 7120, 31, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
+                SpecialEffect effect = new SpecialEffect(Libraries.Magic3, 7160, 24, 3600, this, true, true, 1) { Repeat = true };
 
                 Effects.Add(effect);
             }
 
             if (LevelEffects.HasFlag(LevelEffects.Phoenix))
             {
-                Effects.Add(new SpecialEffect(Libraries.Effect, 1663, 26, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
-                SpecialEffect effect = new SpecialEffect(Libraries.Effect, 1705, 21, 3600, this, true, true, 1) { Repeat = true };
+                Effects.Add(new SpecialEffect(Libraries.Magic3, 6970, 26, 3600, this, true, false, 1) { Repeat = true, Delay = delay });
+                SpecialEffect effect = new SpecialEffect(Libraries.Magic3, 7000, 21, 3600, this, true, true, 1) { Repeat = true };
 
                 Effects.Add(effect);
             }
@@ -741,7 +747,7 @@ namespace Client.MirObjects
                     GameScene.CanRun = false;
             }
 
-            SkipFrames = this != User && ActionFeed.Count > 1;
+            SkipFrames = this != User && ActionFeed.Count > 0;
 
             ProcessFrames();
 
@@ -856,33 +862,25 @@ namespace Client.MirObjects
             for (int i = 0; i < Effects.Count; i++)
                 Effects[i].Process();
 
-            Color colour = DrawColour;
-            DrawColour = Color.White;
-            if (Poison != PoisonType.None)
+            Color newColour = Poison switch
             {
-                
-                if (Poison.HasFlag(PoisonType.Green))
-                    DrawColour = Color.Green;
-                if (Poison.HasFlag(PoisonType.Red))
-                    DrawColour = Color.Red;
-                if (Poison.HasFlag(PoisonType.Bleeding))
-                    DrawColour = Color.DarkRed;
-                if (Poison.HasFlag(PoisonType.Slow))
-                    DrawColour = Color.Purple;
-                if (Poison.HasFlag(PoisonType.Stun) || Poison.HasFlag(PoisonType.Dazed))
-                    DrawColour = Color.Yellow;
-                if (Poison.HasFlag(PoisonType.Blindness))
-                    DrawColour = Color.MediumVioletRed;
-                if (Poison.HasFlag(PoisonType.Frozen))
-                    DrawColour = Color.Blue;
-                if (Poison.HasFlag(PoisonType.Paralysis) || Poison.HasFlag(PoisonType.LRParalysis))
-                    DrawColour = Color.Gray;             
-                if (Poison.HasFlag(PoisonType.DelayedExplosion))
-                    DrawColour = Color.Orange;
+                _ when (Poison & PoisonType.DelayedExplosion) == PoisonType.DelayedExplosion => Color.Orange,
+                _ when (Poison & (PoisonType.Paralysis | PoisonType.LRParalysis)) != 0 => Color.Gray,
+                _ when (Poison & PoisonType.Frozen) == PoisonType.Frozen => Color.Blue,
+                _ when (Poison & PoisonType.Blindness) == PoisonType.Blindness => Color.MediumVioletRed,
+                _ when (Poison & (PoisonType.Stun | PoisonType.Dazed)) != 0 => Color.Yellow,
+                _ when (Poison & PoisonType.Slow) == PoisonType.Slow => Color.Purple,
+                _ when (Poison & PoisonType.Bleeding) == PoisonType.Bleeding => Color.DarkRed,
+                _ when (Poison & PoisonType.Red) == PoisonType.Red => Color.Red,
+                _ when (Poison & PoisonType.Green) == PoisonType.Green => Color.Green,
+                _ => Color.White
+            };
+
+            if (newColour != DrawColour)
+            {
+                DrawColour = newColour;
+                GameScene.Scene.MapControl.TextureValid = false;
             }
-
-
-            if (colour != DrawColour) GameScene.Scene.MapControl.TextureValid = false;
         }
         public virtual void SetAction()
         {
@@ -904,19 +902,14 @@ namespace Client.MirObjects
                 }
             }
 
-            if (User == this && CMain.Time < MapControl.NextAction)// && CanSetAction)
-            {
-                //NextMagic = null;
+            if (User == this && !GameScene.Observing && CMain.Time < MapControl.NextAction)
                 return;
-            }
-
 
             if (ActionFeed.Count == 0)
             {
                 CurrentAction = MirAction.Standing;
 
                 CurrentAction = CMain.Time > BlizzardStopTime ? CurrentAction : MirAction.Stance2;
-                //CurrentAction = CMain.Time > SlashingBurstTime ? CurrentAction : MirAction.Lunge;
 
                 if (RidingMount)
                 {
@@ -972,7 +965,6 @@ namespace Client.MirObjects
             {
                 QueuedAction action = ActionFeed[0];
                 ActionFeed.RemoveAt(0);
-
 
                 CurrentAction = action.Action;
 
@@ -1030,8 +1022,6 @@ namespace Client.MirObjects
                         break;
                 }
 
-                temp = new Point(action.Location.X, temp.Y > CurrentLocation.Y ? temp.Y : CurrentLocation.Y);
-
                 if (MapLocation != temp)
                 {
                     GameScene.Scene.MapControl.RemoveObject(this);
@@ -1058,8 +1048,6 @@ namespace Client.MirObjects
                         break;
                     case MirAction.DashFail:
                         Frames.TryGetValue(RidingMount ? MirAction.MountStanding : MirAction.Standing, out Frame);
-                        //Frames.TryGetValue(MirAction.Standing, out Frame);
-                        //CanSetAction = false;
                         break;
                     case MirAction.Jump:
                         Frames.TryGetValue(MirAction.Jump, out Frame);
@@ -1370,7 +1358,7 @@ namespace Client.MirObjects
 
                             if (!RidingMount)
                             {
-                                if (GameScene.User.Slaying && TargetObject != null)
+                                if (GameScene.User.Slaying && (TargetObject != null || GameScene.Observing))
                                     Spell = Spell.Slaying;
 
                                 if (GameScene.User.Thrusting && GameScene.Scene.MapControl.HasTarget(Functions.PointMove(CurrentLocation, Direction, 2)))
@@ -1404,7 +1392,7 @@ namespace Client.MirObjects
                                 }
 
 
-                                if (GameScene.User.TwinDrakeBlade && TargetObject != null)
+                                if (GameScene.User.TwinDrakeBlade && (TargetObject != null || GameScene.Observing))
                                 {
                                     magic = User.GetMagic(Spell.TwinDrakeBlade);
                                     if (magic != null && magic.BaseCost + magic.LevelCost * magic.Level <= User.MP)
@@ -1613,17 +1601,19 @@ namespace Client.MirObjects
                     case MirAction.MountStruck:
                         uint attackerID = (uint)action.Params[0];
                         StruckWeapon = -2;
-                        for (int i = 0; i < MapControl.Objects.Count; i++)
+
+                        if (action.Params.Count > 1)
                         {
-                            MapObject ob = MapControl.Objects[i];
-                            if (ob.ObjectID != attackerID) continue;
-                            if (ob.Race != ObjectType.Player) break;
-                            PlayerObject player = ((PlayerObject)ob);
-                            StruckWeapon = player.Weapon;
-                            if (player.Class != MirClass.Assassin || StruckWeapon == -1) break;
-                            StruckWeapon = 1;
-                            break;
+                            StruckWeapon = (int)action.Params[1];
                         }
+                        else if (MapControl.Objects.TryGetValue(attackerID, out MapObject ob))
+                            if (ob.Race == ObjectType.Player)
+                            {
+                                PlayerObject player = (PlayerObject)ob;
+                                StruckWeapon = player.Weapon;
+                                if (player.Class == MirClass.Assassin && StruckWeapon != -1)
+                                    StruckWeapon = 1;
+                            }
 
                         PlayStruckSound();
                         PlayFlinchSound();
@@ -2109,8 +2099,7 @@ namespace Client.MirObjects
                             #region SlashingBurst
 
                             case Spell.SlashingBurst:
-                                //MapControl.Effects.Add(new Effect(Libraries.Magic2, 1700 + (int)Direction * 10, 9, 9 * FrameInterval, CurrentLocation));
-                                Effects.Add(new Effect(Libraries.Magic2, 1700 + (int)Direction * 10, 9, 9 * FrameInterval, this));
+                                MapControl.Effects.Add(new Effect(Libraries.Magic2, 1700 + (int)Direction * 10, 9, 9 * FrameInterval, CurrentLocation, CMain.Time + 300));
                                 SoundManager.PlaySound(20000 + (ushort)Spell * 10);
                                 SlashingBurstTime = CMain.Time + 2000;
                                 break;
@@ -2321,20 +2310,14 @@ namespace Client.MirObjects
                 case MirAction.Sneek:
                 case MirAction.DashAttack:
                     if (!GameScene.CanMove) return;
-                    
 
                     GameScene.Scene.MapControl.TextureValid = false;
 
                     if (this == User) GameScene.Scene.MapControl.FloorValid = false;
-                    //if (CMain.Time < NextMotion) return;
-                    if (SkipFrames) UpdateFrame();
-
-
+                    if (SkipFrames) FrameIndex = Frame.Count;
 
                     if (UpdateFrame(false) >= Frame.Count)
                     {
-
-
                         FrameIndex = Frame.Count - 1;
                         SetAction();
                     }
@@ -2345,20 +2328,9 @@ namespace Client.MirObjects
                             if (FrameIndex == 1 || FrameIndex == 4)
                                 PlayStepSound();
                         }
-                        //NextMotion += FrameInterval;
                     }
 
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        if (this == User) GameScene.Scene.MapControl.TextureValid = false;
-
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
                  case MirAction.Jump:
                     if (!GameScene.CanMove) return;
@@ -2378,17 +2350,7 @@ namespace Client.MirObjects
                             SoundManager.PlaySound(20000 + 127 * 10 + 7);
                     }
                     //Backstep wingeffect
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        if (this == User) GameScene.Scene.MapControl.TextureValid = false;
-
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
                 case MirAction.DashL:
                     if (!GameScene.CanMove) return;
@@ -2435,7 +2397,7 @@ namespace Client.MirObjects
                         SetAction();
                     }
 
-                    if (FrameIndex < 0) EffectFrameIndex = 0;
+                    if (EffectFrameIndex < 0) EffectFrameIndex = 0;
                     break;
 
                 case MirAction.Standing:
@@ -2461,17 +2423,7 @@ namespace Client.MirObjects
                         }
                     }
 
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
-
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;  
 
 
@@ -2530,17 +2482,7 @@ namespace Client.MirObjects
                         }
                     }
 
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
-
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;     
 
                 case MirAction.Attack1:
@@ -2571,17 +2513,7 @@ namespace Client.MirObjects
                         }
                     }
 
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
-
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
 
                 case MirAction.AttackRange1:
@@ -2630,17 +2562,7 @@ namespace Client.MirObjects
                         }
                     }
 
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
-
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
 
                 case MirAction.AttackRange2:
@@ -2869,17 +2791,8 @@ namespace Client.MirObjects
                             }
                         }
                     }
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
 
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
 
                 case MirAction.Struck:
@@ -2900,17 +2813,8 @@ namespace Client.MirObjects
                             NextMotion += FrameInterval;
                         }
                     }
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
 
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
                 case MirAction.Spell:
                     if (CMain.Time >= NextMotion)
@@ -3531,17 +3435,8 @@ namespace Client.MirObjects
 
                         }
                     }
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
 
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
                 case MirAction.Die:
                     if (CMain.Time >= NextMotion)
@@ -3565,17 +3460,8 @@ namespace Client.MirObjects
                             NextMotion += FrameInterval;
                         }
                     }
-                    if (WingEffect > 0 && CMain.Time >= NextMotion2)
-                    {
-                        GameScene.Scene.MapControl.TextureValid = false;
 
-                        if (SkipFrames) UpdateFrame2();
-
-                        if (UpdateFrame2() >= Frame.EffectCount)
-                            EffectFrameIndex = Frame.EffectCount - 1;
-                        else
-                            NextMotion2 += EffectFrameInterval;
-                    }
+                    UpdateWingEffect();
                     break;
                 case MirAction.Dead:
                     break;
@@ -3632,6 +3518,21 @@ namespace Client.MirObjects
             if (Frame.Reverse) return Math.Abs(--EffectFrameIndex);
 
             return ++EffectFrameIndex;
+        }
+
+        private void UpdateWingEffect()
+        {
+            if (WingEffect > 0 && CMain.Time >= NextMotion2)
+            {
+                GameScene.Scene.MapControl.TextureValid = false;
+
+                if (SkipFrames) UpdateFrame2();
+
+                if (UpdateFrame2() >= Frame.EffectCount)
+                    EffectFrameIndex = Frame.EffectCount - 1;
+                else
+                    NextMotion2 += EffectFrameInterval;
+            }
         }
 
 

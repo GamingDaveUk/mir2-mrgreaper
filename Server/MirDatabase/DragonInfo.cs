@@ -1,3 +1,4 @@
+using System.Drawing;
 ﻿using Server.MirEnvir;
 
 namespace Server.MirDatabase
@@ -119,7 +120,7 @@ namespace Server.MirDatabase
                 DropInfo drop = DropInfo.FromLine(lines[i]);
                 if (drop == null)
                 {
-                    MessageQueue.Enqueue(string.Format("Could not load Drop: DragonItem, Line {0}", lines[i]));
+                    MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CouldNotLoadDropDragonItem), lines[i]));
                     continue;
                 }
 

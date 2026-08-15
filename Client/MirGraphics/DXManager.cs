@@ -519,7 +519,6 @@ namespace Client.MirGraphics
                 }
 
                 DXManager.FloorTexture = null;
-                GameScene.Scene.MapControl.FloorValid = false;
 
                 if (DXManager.FloorSurface != null && !DXManager.FloorSurface.Disposed)
                 {
@@ -580,8 +579,8 @@ namespace Client.MirGraphics
         {
             CleanUp();
 
-            Device.Direct3D?.Dispose();
-            Device.Dispose();
+            Device?.Direct3D?.Dispose();
+            Device?.Dispose();
 
             NormalPixelShader?.Dispose();
             GrayScalePixelShader?.Dispose();

@@ -17,6 +17,7 @@ namespace Client.MirGraphics
             Prguse = new MLibrary(Settings.DataPath + "Prguse"),
             Prguse2 = new MLibrary(Settings.DataPath + "Prguse2"),
             Prguse3 = new MLibrary(Settings.DataPath + "Prguse3"),
+            UI_32bit = new MLibrary(Settings.DataPath + "UI_32bit"),
             BuffIcon = new MLibrary(Settings.DataPath + "BuffIcon"),
             Help = new MLibrary(Settings.DataPath + "Help"),
             MiniMap = new MLibrary(Settings.DataPath + "MMap"),
@@ -29,7 +30,8 @@ namespace Client.MirGraphics
             Magic3 = new MLibrary(Settings.DataPath + "Magic3"),
             Effect = new MLibrary(Settings.DataPath + "Effect"),
             MagicC = new MLibrary(Settings.DataPath + "MagicC"),
-            GuildSkill = new MLibrary(Settings.DataPath + "GuildSkill");
+            GuildSkill = new MLibrary(Settings.DataPath + "GuildSkill"),
+            Weather = new MLibrary(Settings.DataPath + "Weather");
 
         public static readonly MLibrary
             Background = new MLibrary(Settings.DataPath + "Background");
@@ -45,7 +47,8 @@ namespace Client.MirGraphics
         public static readonly MLibrary
             Items = new MLibrary(Settings.DataPath + "Items"),
             StateItems = new MLibrary(Settings.DataPath + "StateItem"),
-            FloorItems = new MLibrary(Settings.DataPath + "DNItems");
+            FloorItems = new MLibrary(Settings.DataPath + "DNItems"),
+            Items_Tooltip_32bit = new MLibrary(Settings.DataPath + "Items_Tooltip_32bit");
 
         //Deco
         public static readonly MLibrary
@@ -121,10 +124,12 @@ namespace Client.MirGraphics
             MapLibs[0] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Tiles");
             MapLibs[1] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Smtiles");
             MapLibs[2] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Objects");
-            for (int i = 2; i < 27; i++)
+            for (int i = 2; i < 28; i++)
             {
                 MapLibs[i + 1] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Objects" + i.ToString());
             }
+            MapLibs[90] = new MLibrary(Settings.DataPath + "Map\\WemadeMir2\\Objects_32bit");
+
             //shanda mir2 (allowed from 100-199)
             MapLibs[100] = new MLibrary(Settings.DataPath + "Map\\ShandaMir2\\Tiles");
             for (int i = 1; i < 10; i++)
@@ -223,6 +228,9 @@ namespace Client.MirGraphics
             Prguse3.Initialize();
             Progress++;
 
+            UI_32bit.Initialize();
+            Progress++;
+
             Title.Initialize();
             Progress++;
         }
@@ -233,7 +241,7 @@ namespace Client.MirGraphics
                 CHair.Length + CWeapons.Length + CWeaponEffect.Length + AArmours.Length + AHair.Length + AWeaponsL.Length + AWeaponsR.Length +
                 ARArmours.Length + ARHair.Length + ARWeapons.Length + ARWeaponsS.Length +
                 CHumEffect.Length + AHumEffect.Length + ARHumEffect.Length + Mounts.Length + Fishing.Length + Pets.Length +
-                Transform.Length + TransformMounts.Length + TransformEffect.Length + TransformWeaponEffect.Length + 18;
+                Transform.Length + TransformMounts.Length + TransformEffect.Length + TransformWeaponEffect.Length + 19;
 
             Dragon.Initialize();
             Progress++;
@@ -266,6 +274,9 @@ namespace Client.MirGraphics
             Effect.Initialize();
             Progress++;
 
+            Weather.Initialize();
+            Progress++;
+
             GuildSkill.Initialize();
             Progress++;
 
@@ -280,6 +291,8 @@ namespace Client.MirGraphics
             StateItems.Initialize();
             Progress++;
             FloorItems.Initialize();
+            Progress++;
+            Items_Tooltip_32bit.Initialize();
             Progress++;
 
             for (int i = 0; i < MapLibs.Length; i++)
@@ -957,7 +970,7 @@ namespace Client.MirGraphics
                 int x = p.X;
                 int y = p.Y;
                 
-                int index = (y * (w << 2)) + (x << 2);
+                int index = (y * (w << 2)) + (x << 2) + 3;
                 
                 byte col = Data[index];
 

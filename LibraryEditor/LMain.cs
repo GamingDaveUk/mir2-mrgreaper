@@ -338,7 +338,7 @@ namespace LibraryEditor
                         short.TryParse(placements[1], out y);
                 }
 
-                _library.AddImage(image, x, y);
+                _library.AddImage(image, x, y, checkboxRemoveBlackOnImport.Checked);
                 toolStripProgressBar.Value++;
                 //image.Dispose();
             }
@@ -427,7 +427,7 @@ namespace LibraryEditor
                     g.DrawImage(shadowImage.Image, new Point(offSetX > 0 ? offSetX : 0, offSetY > 0 ? offSetY : 0));
                 }
 
-                _library.ReplaceImage(i, newBitmap, mImage.X, mImage.Y);
+                _library.ReplaceImage(i, newBitmap, mImage.X, mImage.Y, checkboxRemoveBlackOnImport.Checked);
             }
 
             PreviewListView.VirtualListSize = _library.Images.Count;
@@ -510,26 +510,31 @@ namespace LibraryEditor
 
             try
             {
-                ParallelOptions options = new ParallelOptions { MaxDegreeOfParallelism = 8 };
-                Parallel.For(0, OpenWeMadeDialog.FileNames.Length, options, i =>
+                Task.Factory.StartNew(() =>
+                {
+                    ParallelOptions options = new ParallelOptions { MaxDegreeOfParallelism = 8 };
+                    Parallel.For(0, OpenWeMadeDialog.FileNames.Length, options, i =>
                             {
-                                if (Path.GetExtension(OpenWeMadeDialog.FileNames[i]) == ".wtl")
+                                var fileName = OpenWeMadeDialog.FileNames[i];
+                                var ext = Path.GetExtension(fileName).ToUpper();
+                                if (ext == ".WTL")
                                 {
-                                    WTLLibrary WTLlib = new WTLLibrary(OpenWeMadeDialog.FileNames[i]);
+                                    WTLLibrary WTLlib = new WTLLibrary(fileName);
                                     WTLlib.ToMLibrary();
                                 }
-                                else if (Path.GetExtension(OpenWeMadeDialog.FileNames[i]) == ".Lib")
+                                else if (ext == ".LIB")
                                 {
-                                    MLibraryV1 v1Lib = new MLibraryV1(OpenWeMadeDialog.FileNames[i]);
+                                    MLibraryV1 v1Lib = new MLibraryV1(fileName);
                                     v1Lib.ToMLibrary();
                                 }
                                 else
                                 {
-                                    WeMadeLibrary WILlib = new WeMadeLibrary(OpenWeMadeDialog.FileNames[i]);
+                                    WeMadeLibrary WILlib = new WeMadeLibrary(fileName);
                                     WILlib.ToMLibrary();
                                 }
-                                toolStripProgressBar.Value++;
+                                Invoke(new Action(() => { toolStripProgressBar.Value++; }));
                             });
+                });
             }
             catch (Exception ex)
             {
@@ -560,7 +565,7 @@ namespace LibraryEditor
             for (int i = 0; i < copyList.Count; i++)
             {
                 MLibraryV2.MImage image = _library.GetMImage(copyList[i]);
-                tempLibrary.AddImage(image.Image, image.MaskImage, image.X, image.Y);
+                tempLibrary.AddImage(image.Image, image.MaskImage, image.X, image.Y, checkboxRemoveBlackOnImport.Checked);
             }
 
             tempLibrary.Save();
@@ -889,7 +894,7 @@ namespace LibraryEditor
 
             ImageList.Images.Clear();
             _indexList.Clear();
-            _library.ReplaceImage(PreviewListView.SelectedIndices[0], newBmp, 0, 0);
+            _library.ReplaceImage(PreviewListView.SelectedIndices[0], newBmp, 0, 0, checkboxRemoveBlackOnImport.Checked);
             PreviewListView.VirtualListSize = _library.Images.Count;
 
             try

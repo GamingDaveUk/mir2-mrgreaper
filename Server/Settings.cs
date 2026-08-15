@@ -1,6 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using Server.MirDatabase;
 using Server.MirObjects;
+using Shared;
 
 namespace Server
 {
@@ -27,7 +29,10 @@ namespace Server
             RoutePath = Path.Combine(EnvirPath, "Routes"),
             NameListPath = Path.Combine(EnvirPath, "NameLists"),
             ValuePath = Path.Combine(EnvirPath, "Values"),
-            NoticePath = Path.Combine(EnvirPath, "Notice.txt");
+            NoticePath = Path.Combine(EnvirPath, "Notice.txt"),
+            MinimapsPath = Path.Combine(EnvirPath, "Previews", "Minimaps"),
+            NPCPreviewPath = Path.Combine(EnvirPath, "Previews", "NPC"),
+            Previews = Path.Combine(EnvirPath, "Previews");
 
         private static readonly InIReader Reader = new InIReader(Path.Combine(ConfigPath, "Setup.ini"));
 
@@ -52,6 +57,8 @@ namespace Server
 	    public static string AwakeningDropFilename = "00Awakening";
         public static string StrongboxDropFilename = "00Strongbox";
         public static string BlackstoneDropFilename = "00Blackstone";
+
+        public static string Language = "English";
 
         //Network
         public static string IPAddress = "127.0.0.1";
@@ -78,7 +85,8 @@ namespace Server
                            AllowDeleteCharacter = true,
                            AllowStartGame = false,
                            AllowCreateAssassin = true,
-                           AllowCreateArcher = true;
+                           AllowCreateArcher = true,
+                           RequireStoragePassword = true;
 
         public static int AllowedResolution = 1024;
 
@@ -96,6 +104,7 @@ namespace Server
 
         //Game
         public static List<long> ExperienceList = new List<long>();
+        public static List<long> HeroExperienceList = new List<long>();
         public static List<long> OrbsExpList = new List<long>();
         public static List<long> OrbsDefList = new List<long>();
         public static List<long> OrbsDmgList = new List<long>();
@@ -108,8 +117,40 @@ namespace Server
                           DropRange = 4,
                           DropStackSize = 5,
                           PKDelay = 12;
+        public static bool MonsterRecallEnabled = true;
+        public static int MonsterRecallRange = 12;
+        public static int MonsterRecallCooldown = 5000;
+        public static bool MonsterRarityEnabled = true;
+        public static double MonsterRarityUncommonChancePercent = 3.0,
+                              MonsterRarityRareChancePercent = 0.75,
+                              MonsterRarityEliteChancePercent = 0.1;
+        public static double MonsterRarityUncommonHpMultiplier = 1.25,
+                              MonsterRarityUncommonDefenseMultiplier = 1.15,
+                              MonsterRarityUncommonDamageMultiplier = 1.15,
+                              MonsterRarityUncommonExpMultiplier = 1.20,
+                              MonsterRarityUncommonGoldMultiplier = 1.25;
+        public static int MonsterRarityUncommonItemDropBonusPercent = 15,
+                          MonsterRarityUncommonGoldDropBonusPercent = 15;
+
+        public static double MonsterRarityRareHpMultiplier = 1.60,
+                              MonsterRarityRareDefenseMultiplier = 1.30,
+                              MonsterRarityRareDamageMultiplier = 1.35,
+                              MonsterRarityRareExpMultiplier = 1.60,
+                              MonsterRarityRareGoldMultiplier = 1.75;
+        public static int MonsterRarityRareItemDropBonusPercent = 35,
+                          MonsterRarityRareGoldDropBonusPercent = 35;
+
+        public static double MonsterRarityEliteHpMultiplier = 2.25,
+                              MonsterRarityEliteDefenseMultiplier = 1.55,
+                              MonsterRarityEliteDamageMultiplier = 1.65,
+                              MonsterRarityEliteExpMultiplier = 2.20,
+                              MonsterRarityEliteGoldMultiplier = 2.50;
+        public static int MonsterRarityEliteItemDropBonusPercent = 75,
+                          MonsterRarityEliteGoldDropBonusPercent = 75;
 
         public static bool PetSave = false;
+
+        public static int MaxBossTames = 1;
 
         public static int RestedPeriod = 60,
                           RestedBuffLength = 10,
@@ -172,6 +213,8 @@ namespace Server
                              ScrollMob4 = "AssassinScroll",
                              StoneName = "StoneTrap",
                              HeroName = "Hero";
+
+
 
         public static string HealRing = "Healing",
                              FireRing = "FireBall",
@@ -243,6 +286,7 @@ namespace Server
         public static bool GoodsHideAddedStats = true;
 
         public static BaseStats[] ClassBaseStats = new BaseStats[5] { new BaseStats(MirClass.Warrior), new BaseStats(MirClass.Wizard), new BaseStats(MirClass.Taoist), new BaseStats(MirClass.Assassin), new BaseStats(MirClass.Archer) };
+        public static BaseStats[] HeroBaseStats = new BaseStats[5] { new BaseStats(MirClass.Warrior), new BaseStats(MirClass.Wizard), new BaseStats(MirClass.Taoist), new BaseStats(MirClass.Assassin), new BaseStats(MirClass.Archer) };
 
         public static List<RandomItemStat> RandomItemStatsList = new List<RandomItemStat>();
         public static List<MineSet> MineSetList = new List<MineSet>();
@@ -267,16 +311,19 @@ namespace Server
 
         public static byte RangeAccuracyBonus = 0;
 
-        public static bool AllowNewHero;
+        //Hero related settings
+        public static bool AllowNewHero = true;
         public static byte Hero_RequiredLevel = 22;
         public static bool[] Hero_CanCreateClass = new bool[0];
-        public static string HeroSealItemName;
-        public static ushort HeroMaximumSealCount;
-        public static byte MaximumHeroCount = 1;
+        public static string HeroSealItemName = "SealedHero";
+        public static ushort HeroMaximumSealCount = 5;
+        public static byte MaximumHeroCount = 9;
 
         public static bool AllowObserve;
 
         //Guild related settings
+        public static bool NewbieGuildBuffEnabled = true;
+        public static int NewbieGuildExpBuff = 5;
         public static byte Guild_RequiredLevel = 22, Guild_PointPerLevel = 0;
         public static float Guild_ExpRate = 0.01f;
         public static uint Guild_WarCost = 3000;
@@ -293,6 +340,9 @@ namespace Server
         public static int ArchiveInactiveCharacterAfterMonths = 12;
         public static int ArchiveDeletedCharacterAfterMonths = 1;
 
+        public static int BuyGTGold = 10000000, ExtendGT = 1000000, GTDays = 30;
+
+        public static readonly string DbLanguageFile = @"DbLanguage.json";
         public static void LoadVersion()
         {
             try
@@ -336,6 +386,7 @@ namespace Server
             TestServer = Reader.ReadBoolean("General", "TestServer", TestServer);
             EnforceDBChecks = Reader.ReadBoolean("General", "EnforceDBChecks", EnforceDBChecks);
             MonsterProcessWhenAlone = Reader.ReadBoolean("General", "MonsterProcessWhenAlone", MonsterProcessWhenAlone);
+            Language=Reader.ReadString("General", "Language", Language);
 
             //Paths
             IPAddress = Reader.ReadString("Network", "IPAddress", IPAddress);
@@ -359,6 +410,7 @@ namespace Server
             AllowStartGame = Reader.ReadBoolean("Permission", "AllowStartGame", AllowStartGame);
             AllowCreateAssassin = Reader.ReadBoolean("Permission", "AllowCreateAssassin", AllowCreateAssassin);
             AllowCreateArcher = Reader.ReadBoolean("Permission", "AllowCreateArcher", AllowCreateArcher);
+            RequireStoragePassword = Reader.ReadBoolean("Permission", "RequireStoragePassword", RequireStoragePassword);
             AllowedResolution = Reader.ReadInt32("Permission", "MaxResolution", AllowedResolution);
 
             //Optional
@@ -379,7 +431,11 @@ namespace Server
             ItemTimeOut = Reader.ReadInt32("Game", "ItemTimeOut", ItemTimeOut);
             PlayerDiedItemTimeOut = Reader.ReadInt32("Game", "PlayerDiedItemTimeOut", PlayerDiedItemTimeOut);
             PetSave = Reader.ReadBoolean("Game", "PetSave", PetSave);
+            MaxBossTames = Math.Max(0, Reader.ReadInt32("Game", "MaxBossTames", MaxBossTames));
             PKDelay = Reader.ReadInt32("Game", "PKDelay", PKDelay);
+            MonsterRecallEnabled = Reader.ReadBoolean("Game", "MonsterRecallEnabled", MonsterRecallEnabled);
+            MonsterRecallRange = Reader.ReadInt32("Game", "MonsterRecallRange", MonsterRecallRange);
+            MonsterRecallCooldown = Reader.ReadInt32("Game", "MonsterRecallCooldown", MonsterRecallCooldown);
             NewbieGuild = Reader.ReadString("Game", "NewbieGuild", NewbieGuild);
             NewbieGuildMaxSize = Reader.ReadInt32("Game", "NewbieGuildMaxSize", NewbieGuildMaxSize);
             SkeletonName = Reader.ReadString("Game", "SkeletonName", SkeletonName);
@@ -489,7 +545,6 @@ namespace Server
                 Directory.CreateDirectory(EnvirPath);
             if (!Directory.Exists(ConfigPath))
                 Directory.CreateDirectory(ConfigPath);
-
             if (!Directory.Exists(MapPath))
                 Directory.CreateDirectory(MapPath);
             if (!Directory.Exists(NPCPath))
@@ -508,6 +563,15 @@ namespace Server
                 Directory.CreateDirectory(NameListPath);
             if (!Directory.Exists(RecipePath))
                 Directory.CreateDirectory(RecipePath);
+            string PreviewsPath = Path.Combine(EnvirPath, "Previews");
+            if (!Directory.Exists(PreviewsPath))
+                Directory.CreateDirectory(PreviewsPath);
+            string NPCPreviewPath = Path.Combine(EnvirPath, "Previews", "NPC");
+            if (!Directory.Exists(NPCPreviewPath))
+                Directory.CreateDirectory(NPCPreviewPath);
+            string MinimapsPath = Path.Combine(EnvirPath, "Previews", "Minimaps");
+            if (!Directory.Exists(MinimapsPath))
+                Directory.CreateDirectory(MinimapsPath);
 
             string fileName = Path.Combine(Settings.NPCPath, DefaultNPCFilename + ".txt");
 
@@ -535,7 +599,9 @@ namespace Server
 
             LoadVersion();
             LoadEXP();
+            LoadHeroEXP();
             LoadBaseStats();
+            LoadHeroBaseStats();
             LoadRandomItemStats();
             LoadMines();
             LoadGuildSettings();
@@ -546,12 +612,20 @@ namespace Server
             LoadMarriage();
             LoadMentor();
             LoadGoods();
+            LoadMonsterRarity();
             LoadGem();
             LoadNotice();
             LoadWorldMap();
             LoadHeroSettings();
 
-            GameLanguage.LoadServerLanguage(Path.Combine(ConfigPath, "Language.ini"));
+            string languageDirectory = @".\Localization\";
+            if (!Directory.Exists(languageDirectory))
+            {
+                Directory.CreateDirectory(languageDirectory);
+            }
+            string settingLanguageFile = Path.Combine(languageDirectory, Language + ".json");
+            GameLanguage.LoadServerLanguage(settingLanguageFile);
+
         }
 
         public static void LoadNotice()
@@ -600,6 +674,7 @@ namespace Server
             Reader.Write("General", "TestServer", TestServer);
             Reader.Write("General", "EnforceDBChecks", EnforceDBChecks);
             Reader.Write("General", "MonsterProcessWhenAlone", MonsterProcessWhenAlone);
+            Reader.Write("General", "Language", Language);
 
             //Paths
             Reader.Write("Network", "IPAddress", IPAddress);
@@ -622,6 +697,7 @@ namespace Server
             Reader.Write("Permission", "AllowStartGame", AllowStartGame);
             Reader.Write("Permission", "AllowCreateAssassin", AllowCreateAssassin);
             Reader.Write("Permission", "AllowCreateArcher", AllowCreateArcher);
+            Reader.Write("Permission", "RequireStoragePassword", RequireStoragePassword);
             Reader.Write("Permission", "MaxResolution", AllowedResolution);
 
             //Optional
@@ -642,6 +718,7 @@ namespace Server
             Reader.Write("Game", "ItemTimeOut", ItemTimeOut);
             Reader.Write("Game", "PlayerDiedItemTimeOut", PlayerDiedItemTimeOut);
             Reader.Write("Game", "PetSave", PetSave);
+            Reader.Write("Game", "MaxBossTames", MaxBossTames);
             Reader.Write("Game", "PKDelay", PKDelay);
             Reader.Write("Game", "NewbieGuild", NewbieGuild);
             Reader.Write("Game", "NewbieGuildMaxSize", NewbieGuildMaxSize);
@@ -785,8 +862,18 @@ namespace Server
                 OrbsDmgList.Add(exp);
             }
         }
+        public static void LoadHeroEXP()
+        {
+            long exp = 100;
+            InIReader reader = new InIReader(Path.Combine(ConfigPath, "HeroExpList.ini"));
 
-        public static void LoadWorldMap()
+            for (int i = 1; i <= 500; i++)
+            {
+                exp = reader.ReadInt64("Exp", "Level" + i, exp);
+                HeroExperienceList.Add(exp);
+            }
+        }
+            public static void LoadWorldMap()
         {
             InIReader reader = null;
             string path = Path.Combine(ConfigPath, "WorldMap.ini");
@@ -864,6 +951,46 @@ namespace Server
             }
         }
 
+        public static void LoadHeroBaseStats()
+        {
+            for (int i = 0; i < HeroBaseStats.Length; i++)
+            {
+                if (!File.Exists(Path.Combine(ConfigPath, $"HeroBaseStats{HeroBaseStats[i].Job}.ini")))
+                {
+                    SaveHeroBaseStats(new BaseStats[1] { new BaseStats(HeroBaseStats[i].Job) });
+                    continue;
+                }
+
+                InIReader reader = new InIReader(Path.Combine(ConfigPath, $"HeroBaseStats{HeroBaseStats[i].Job}.ini"));
+
+                HeroBaseStats[i].Stats.Clear();
+                HeroBaseStats[i].Caps.Clear();
+
+                foreach (var stat in Enum.GetValues(typeof(Stat)))
+                {
+                    var key = stat.ToString();
+
+                    var formula = reader.ReadString(key, "Formula", null, false);
+
+                    if (!string.IsNullOrEmpty(formula))
+                    {
+                        var baseStat = new BaseStat((Stat)stat)
+                        {
+                            FormulaType = (StatFormula)Enum.Parse(typeof(StatFormula), formula, true),
+                            Base = reader.ReadInt32(key, "Base", 0),
+                            Gain = reader.ReadFloat(key, "Gain", 0),
+                            GainRate = reader.ReadFloat(key, "GainRate", 0),
+                            Max = reader.ReadInt32(key, "Max", 0)
+                        };
+
+                        HeroBaseStats[i].Stats.Add(baseStat);
+                    }
+
+                    HeroBaseStats[i].Caps[(Stat)stat] = reader.ReadInt32("Caps", key, 0, false);
+                }
+            }
+        }
+
         public static void SaveBaseStats(BaseStats[] classStats = null)
         {
             if (classStats == null)
@@ -875,6 +1002,34 @@ namespace Server
             {
                 File.Delete(Path.Combine(ConfigPath, $"BaseStats{baseStats.Job}.ini"));
                 InIReader reader = new InIReader(Path.Combine(ConfigPath, $"BaseStats{baseStats.Job}.ini"));
+
+                foreach (var stat in baseStats.Stats)
+                {
+                    reader.Write(stat.Type.ToString(), "Formula", stat.FormulaType.ToString());
+                    reader.Write(stat.Type.ToString(), "Base", stat.Base.ToString());
+                    reader.Write(stat.Type.ToString(), "Gain", stat.Gain.ToString());
+                    reader.Write(stat.Type.ToString(), "GainRate", stat.GainRate.ToString());
+                    reader.Write(stat.Type.ToString(), "Max", stat.Max.ToString());
+                }
+
+                foreach (var item in baseStats.Caps.Values)
+                {
+                    reader.Write("Caps", item.Key.ToString(), item.Value);
+                }
+            }
+        }
+
+        public static void SaveHeroBaseStats(BaseStats[] heroStats = null)
+        {
+            if (heroStats == null)
+            {
+                heroStats = HeroBaseStats;
+            }
+
+            foreach (var baseStats in heroStats)
+            {
+                File.Delete(Path.Combine(ConfigPath, $"HeroBaseStats{baseStats.Job}.ini"));
+                InIReader reader = new InIReader(Path.Combine(ConfigPath, $"HeroBaseStats{baseStats.Job}.ini"));
 
                 foreach (var stat in baseStats.Stats)
                 {
@@ -1187,6 +1342,8 @@ namespace Server
             Guild_PointPerLevel = reader.ReadByte("Guilds", "PointPerLevel", Guild_PointPerLevel);
             Guild_WarTime = reader.ReadInt64("Guilds", "WarTime", Guild_WarTime);
             Guild_WarCost = reader.ReadUInt32("Guilds", "WarCost", Guild_WarCost);
+            NewbieGuildBuffEnabled = reader.ReadBoolean("Guilds", "NewbieGuildBuffEnabled", NewbieGuildBuffEnabled);
+            NewbieGuildExpBuff = reader.ReadInt32("Guilds", "NewbieGuildExpBuff", NewbieGuildExpBuff);
 
             int i = 0;
             while (reader.ReadUInt32("Required-" + i.ToString(),"Amount",0) != 0)
@@ -1227,6 +1384,8 @@ namespace Server
             reader.Write("Guilds", "TotalBuffs", Guild_BuffList.Count);
             reader.Write("Guilds", "WarTime", Guild_WarTime);
             reader.Write("Guilds", "WarCost", Guild_WarCost);
+            reader.Write("Guilds", "NewbieGuildExpBuff", NewbieGuildExpBuff);
+            reader.Write("Guilds", "NewbieGuildBuffEnabled", NewbieGuildBuffEnabled);
 
             int i;
             for (i = 0; i < Guild_ExperienceList.Count; i++)
@@ -1277,7 +1436,7 @@ namespace Server
             Awake.Awake_HelmetRate = reader.ReadByte("IncreaseValue", "HelmetValue", Awake.Awake_HelmetRate);
             Awake.Awake_ArmorRate = reader.ReadByte("IncreaseValue", "ArmorValue", Awake.Awake_ArmorRate);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Awake.AwakeChanceMax[i] = reader.ReadByte("Value", "ChanceMax_" + ((ItemGrade)(i + 1)).ToString(), Awake.AwakeChanceMax[i]);
             }
@@ -1291,7 +1450,7 @@ namespace Server
                     value[k] = new List<byte>();
                 }
 
-                for (int j = 0; j < 4; j++)
+                for (int j = 0; j < 5; j++)
                 {
                     byte material1 = 1;
                     material1 = reader.ReadByte("Materials_BaseValue", ((AwakeType)(i + 1)).ToString() + "_" + ((ItemGrade)(j + 1)).ToString() + "_Material1", material1);
@@ -1304,7 +1463,7 @@ namespace Server
                 Awake.AwakeMaterials.Add(value);
             }
 
-            for (int c = 0; c < 4; c++)
+            for (int c = 0; c < 5; c++)
             {
                 Awake.AwakeMaterialRate[c] = reader.ReadFloat("Materials_IncreaseValue", "Materials_" + ((ItemGrade)(c + 1)).ToString(), Awake.AwakeMaterialRate[c]);
             }
@@ -1322,7 +1481,7 @@ namespace Server
             reader.Write("IncreaseValue", "HelmetValue", Awake.Awake_HelmetRate);
             reader.Write("IncreaseValue", "ArmorValue", Awake.Awake_ArmorRate);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 reader.Write("Value", "ChanceMax_" + ((ItemGrade)(i + 1)).ToString(), Awake.AwakeChanceMax[i]);
             }
@@ -1331,7 +1490,7 @@ namespace Server
             {
                 for (int i = 0; i < (int)AwakeType.HPMP; i++)
                 {
-                    for (int j = 0; j < 4; j++)
+                    for (int j = 0; j < 5; j++)
                     {
                         reader.Write("Materials_BaseValue", ((AwakeType)(i + 1)).ToString() + "_" + ((ItemGrade)(j + 1)).ToString() + "_Material1", 1);
                         reader.Write("Materials_BaseValue", ((AwakeType)(i + 1)).ToString() + "_" + ((ItemGrade)(j + 1)).ToString() + "_Material2", 1);
@@ -1354,7 +1513,7 @@ namespace Server
                 }
             }
 
-            for (int c = 0; c < 4; c++)
+            for (int c = 0; c < 5; c++)
             {
                 reader.Write("Materials_IncreaseValue", "Materials_" + ((ItemGrade)(c + 1)).ToString(), Awake.AwakeMaterialRate[c]);
             }
@@ -1549,6 +1708,92 @@ namespace Server
             reader.Write("Goods", "BuyBackTime", GoodsBuyBackTime);
             reader.Write("Goods", "BuyBackMaxStored", GoodsBuyBackMaxStored);
             reader.Write("Goods", "HideAddedStats", GoodsHideAddedStats);
+        }
+
+        public static void LoadMonsterRarity()
+        {
+            var rarityReader = new InIReader(Path.Combine(ConfigPath, "MonsterRarity.ini"));
+
+            MonsterRarityEnabled = rarityReader.ReadBoolean("General", "Enabled", MonsterRarityEnabled);
+            MonsterRarityUncommonChancePercent = ReadRarityChancePercent(rarityReader, "UncommonChancePercent", MonsterRarityUncommonChancePercent);
+            MonsterRarityRareChancePercent = ReadRarityChancePercent(rarityReader, "RareChancePercent", MonsterRarityRareChancePercent);
+            MonsterRarityEliteChancePercent = ReadRarityChancePercent(rarityReader, "EliteChancePercent", MonsterRarityEliteChancePercent);
+
+            MonsterRarityUncommonHpMultiplier = rarityReader.ReadDouble("Uncommon", "HpMultiplier", MonsterRarityUncommonHpMultiplier);
+            MonsterRarityUncommonDefenseMultiplier = rarityReader.ReadDouble("Uncommon", "DefenseMultiplier", MonsterRarityUncommonDefenseMultiplier);
+            MonsterRarityUncommonDamageMultiplier = rarityReader.ReadDouble("Uncommon", "DamageMultiplier", MonsterRarityUncommonDamageMultiplier);
+            MonsterRarityUncommonExpMultiplier = rarityReader.ReadDouble("Uncommon", "ExpMultiplier", MonsterRarityUncommonExpMultiplier);
+            MonsterRarityUncommonGoldMultiplier = rarityReader.ReadDouble("Uncommon", "GoldMultiplier", MonsterRarityUncommonGoldMultiplier);
+            MonsterRarityUncommonItemDropBonusPercent = rarityReader.ReadInt32("Uncommon", "ItemDropBonusPercent", MonsterRarityUncommonItemDropBonusPercent);
+            MonsterRarityUncommonGoldDropBonusPercent = rarityReader.ReadInt32("Uncommon", "GoldDropBonusPercent", MonsterRarityUncommonGoldDropBonusPercent);
+
+            MonsterRarityRareHpMultiplier = rarityReader.ReadDouble("Rare", "HpMultiplier", MonsterRarityRareHpMultiplier);
+            MonsterRarityRareDefenseMultiplier = rarityReader.ReadDouble("Rare", "DefenseMultiplier", MonsterRarityRareDefenseMultiplier);
+            MonsterRarityRareDamageMultiplier = rarityReader.ReadDouble("Rare", "DamageMultiplier", MonsterRarityRareDamageMultiplier);
+            MonsterRarityRareExpMultiplier = rarityReader.ReadDouble("Rare", "ExpMultiplier", MonsterRarityRareExpMultiplier);
+            MonsterRarityRareGoldMultiplier = rarityReader.ReadDouble("Rare", "GoldMultiplier", MonsterRarityRareGoldMultiplier);
+            MonsterRarityRareItemDropBonusPercent = rarityReader.ReadInt32("Rare", "ItemDropBonusPercent", MonsterRarityRareItemDropBonusPercent);
+            MonsterRarityRareGoldDropBonusPercent = rarityReader.ReadInt32("Rare", "GoldDropBonusPercent", MonsterRarityRareGoldDropBonusPercent);
+
+            MonsterRarityEliteHpMultiplier = rarityReader.ReadDouble("Elite", "HpMultiplier", MonsterRarityEliteHpMultiplier);
+            MonsterRarityEliteDefenseMultiplier = rarityReader.ReadDouble("Elite", "DefenseMultiplier", MonsterRarityEliteDefenseMultiplier);
+            MonsterRarityEliteDamageMultiplier = rarityReader.ReadDouble("Elite", "DamageMultiplier", MonsterRarityEliteDamageMultiplier);
+            MonsterRarityEliteExpMultiplier = rarityReader.ReadDouble("Elite", "ExpMultiplier", MonsterRarityEliteExpMultiplier);
+            MonsterRarityEliteGoldMultiplier = rarityReader.ReadDouble("Elite", "GoldMultiplier", MonsterRarityEliteGoldMultiplier);
+            MonsterRarityEliteItemDropBonusPercent = rarityReader.ReadInt32("Elite", "ItemDropBonusPercent", MonsterRarityEliteItemDropBonusPercent);
+            MonsterRarityEliteGoldDropBonusPercent = rarityReader.ReadInt32("Elite", "GoldDropBonusPercent", MonsterRarityEliteGoldDropBonusPercent);
+
+            MonsterRarityData.SetEnabled(MonsterRarityEnabled);
+            MonsterRarityData.Configure(MonsterRarityUncommonChancePercent, MonsterRarityRareChancePercent, MonsterRarityEliteChancePercent);
+
+            var overrides = new Dictionary<MonsterType, MonsterRarityProfile>
+            {
+                [MonsterType.Uncommon] = new MonsterRarityProfile
+                {
+                    HpMultiplier = MonsterRarityUncommonHpMultiplier,
+                    DefenseMultiplier = MonsterRarityUncommonDefenseMultiplier,
+                    DamageMultiplier = MonsterRarityUncommonDamageMultiplier,
+                    ExpMultiplier = MonsterRarityUncommonExpMultiplier,
+                    GoldMultiplier = MonsterRarityUncommonGoldMultiplier,
+                    ItemDropBonusPercent = MonsterRarityUncommonItemDropBonusPercent,
+                    GoldDropBonusPercent = MonsterRarityUncommonGoldDropBonusPercent,
+                    NameColour = MonsterRarityData.GetProfile(MonsterType.Uncommon).NameColour
+                },
+                [MonsterType.Rare] = new MonsterRarityProfile
+                {
+                    HpMultiplier = MonsterRarityRareHpMultiplier,
+                    DefenseMultiplier = MonsterRarityRareDefenseMultiplier,
+                    DamageMultiplier = MonsterRarityRareDamageMultiplier,
+                    ExpMultiplier = MonsterRarityRareExpMultiplier,
+                    GoldMultiplier = MonsterRarityRareGoldMultiplier,
+                    ItemDropBonusPercent = MonsterRarityRareItemDropBonusPercent,
+                    GoldDropBonusPercent = MonsterRarityRareGoldDropBonusPercent,
+                    NameColour = MonsterRarityData.GetProfile(MonsterType.Rare).NameColour
+                },
+                [MonsterType.Elite] = new MonsterRarityProfile
+                {
+                    HpMultiplier = MonsterRarityEliteHpMultiplier,
+                    DefenseMultiplier = MonsterRarityEliteDefenseMultiplier,
+                    DamageMultiplier = MonsterRarityEliteDamageMultiplier,
+                    ExpMultiplier = MonsterRarityEliteExpMultiplier,
+                    GoldMultiplier = MonsterRarityEliteGoldMultiplier,
+                    ItemDropBonusPercent = MonsterRarityEliteItemDropBonusPercent,
+                    GoldDropBonusPercent = MonsterRarityEliteGoldDropBonusPercent,
+                    NameColour = MonsterRarityData.GetProfile(MonsterType.Elite).NameColour
+                }
+            };
+
+            MonsterRarityData.ConfigureProfiles(overrides);
+        }
+
+        private static double ReadRarityChancePercent(InIReader reader, string percentKey, double defaultPercent)
+        {
+            double percent = reader.ReadDouble("General", percentKey, defaultPercent, false);
+
+            if (percent < 0) return 0;
+            if (percent > 100) return 100;
+
+            return percent;
         }
 
     }

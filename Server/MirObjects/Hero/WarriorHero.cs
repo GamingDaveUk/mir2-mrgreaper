@@ -53,37 +53,48 @@ namespace Server.MirObjects
         }
         protected override void Attack()
         {
-            if (!Target.IsAttackTarget(Owner))
+            if (Target != null && Owner.PMode == PetMode.FocusMasterTarget && !Target.IsAttackTarget(Owner))
             {
                 Target = null;
                 return;
             }
 
-            Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
-            Spell spell = Spell.None;
-
-            if (TargetDistance > 1 && Info.Thrusting)
-                spell = Spell.Thrusting;
-
-            if (spell == Spell.None && Slaying)
-                spell = Spell.Slaying;
-
-            if (spell == Spell.None)
+            if (Target != null && CanAttack)
             {
-                if (Info.HalfMoon)
-                    spell = Spell.HalfMoon;
+                Direction = Functions.DirectionFromPoint(CurrentLocation, Target.CurrentLocation);
+                var behindEnemyLocation = Functions.PointMove(Target.CurrentLocation, Direction, 1);
+                var thrustCell = CurrentMap.GetCell(behindEnemyLocation);
+                bool ThrustObject = false;
 
-                if (Info.CrossHalfMoon)
-                    spell = Spell.CrossHalfMoon;
+                if (thrustCell.Objects != null && thrustCell.Objects.Count != 0) ThrustObject = true;
 
-                if (TwinDrakeBlade)
-                    spell = Spell.TwinDrakeBlade;
+                Spell spell = Spell.None;
 
-                if (FlamingSword)
-                    spell = Spell.FlamingSword;
+                if (Info.Thrusting && ((TargetDistance == 2) || (TargetDistance == 1 && ThrustObject == true)))
+                {
+                    spell = Spell.Thrusting;
+                }
+
+                if (spell == Spell.None && Slaying)
+                    spell = Spell.Slaying;
+
+                if (spell == Spell.None)
+                {
+                    if (Info.HalfMoon)
+                        spell = Spell.HalfMoon;
+
+                    if (Info.CrossHalfMoon)
+                        spell = Spell.CrossHalfMoon;
+
+                    if (TwinDrakeBlade)
+                        spell = Spell.TwinDrakeBlade;
+
+                    if (FlamingSword)
+                        spell = Spell.FlamingSword;
+                }
+
+                Attack(Direction, spell);
             }
-
-            Attack(Direction, spell);
         }
     }
 }

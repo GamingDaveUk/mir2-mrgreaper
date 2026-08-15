@@ -1,5 +1,7 @@
+using System.Drawing;
 ﻿using Server.MirDatabase;
 using Server.MirObjects;
+using Shared;
 using S = ServerPackets;
 
 namespace Server.MirEnvir
@@ -91,7 +93,7 @@ namespace Server.MirEnvir
                 return 1;
 
             //shanda's 2012 format and one of shandas(wemades) older formats share same header info, only difference is the filesize
-            if ((input[4] == 0x0F) && (input[18] == 0x0D) && (input[19] == 0x0A))
+            if ((input[4] == 0x0F) || (input[4] == 0x03) && (input[18] == 0x0D) && (input[19] == 0x0A))
             {
                 int W = input[0] + (input[1] << 8);
                 int H = input[2] + (input[3] << 8);
@@ -506,7 +508,8 @@ namespace Server.MirEnvir
                 MessageQueue.Enqueue(ex);
             }
 
-            MessageQueue.Enqueue("Failed to Load Map: " + Info.FileName);
+            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.FailedToLoadMap) + Info.Title);
+            MessageQueue.Enqueue(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.Filename) + Info.FileName);
             return false;
         }
 
@@ -776,6 +779,7 @@ namespace Server.MirEnvir
                             Logger.GetLogger(LogType.Spawn).Info($"Failed to spawn: " +
                                 $"mapindex: {respawn.Map.Info.Index}, " +
                                 $"mob info: index: {respawn.Info.MonsterIndex}, " +
+                                $"name: {respawn.Monster.Name}, " +
                                 $"spawncoords ({respawn.Info.Location.X}:{respawn.Info.Location.Y}), " +
                                 $"range {respawn.Info.Spread}");
                         }
@@ -1100,6 +1104,9 @@ namespace Server.MirEnvir
                     value = (int)data[2];
                     location = (Point)data[3];
 
+                    int castId = 0;
+                    if (data.Count >= 5 && data[4] is int ci) castId = ci;
+
                     player.LevelMagic(magic);
 
                     if (ValidPoint(location))
@@ -1120,15 +1127,16 @@ namespace Server.MirEnvir
                         if (cast)
                         {
                             SpellObject ob = new SpellObject
-                                {
-                                    Spell = Spell.FireWall,
-                                    Value = value,
-                                    ExpireTime = Envir.Time + (10 + value / 2) * 1000,
-                                    TickSpeed = 2000,
-                                    Caster = player,
-                                    CurrentLocation = location,
-                                    CurrentMap = this,
-                                };
+                            {
+                                Spell = Spell.FireWall,
+                                Value = value,
+                                ExpireTime = Envir.Time + (10 + value / 2) * 1000,
+                                TickSpeed = 2000,
+                                Caster = player,
+                                CurrentLocation = location,
+                                CurrentMap = this,
+                                CastInstanceId = castId
+                            };
                             AddObject(ob);
                             ob.Spawned();
                         }
@@ -1166,6 +1174,7 @@ namespace Server.MirEnvir
                             Caster = player,
                             CurrentLocation = location,
                             CurrentMap = this,
+                            CastInstanceId = castId
                         };
                         AddObject(ob);
                         ob.Spawned();
@@ -1268,6 +1277,7 @@ namespace Server.MirEnvir
                                 {
                                     case ObjectType.Monster:
                                     case ObjectType.Player:
+                                    case ObjectType.Hero:
                                         //Only targets
                                         if (target.IsFriendlyTarget(player))
                                         {
@@ -1918,6 +1928,23 @@ namespace Server.MirEnvir
 
                             for (int i = 0; i <= 2; i++)
                             {
+                                bool skip = false;
+                                //for the extra spots make sure to not overlap new traps with old ones since it creates invisible double/tripple /... trap spots
+                                if (i > 0)
+                                {
+                                    cell = GetCell(traps[i]);
+
+                                    if (cell.Objects != null)
+                                        for (int o = 0; o < cell.Objects.Count; o++)
+                                        {
+                                            MapObject target = cell.Objects[o];
+                                            if (target.Race != ObjectType.Spell || (((SpellObject)target).Spell != Spell.FireWall && ((SpellObject)target).Spell != Spell.ExplosiveTrap)) continue;
+
+                                            skip = true;
+                                            break;
+                                        }
+                                }
+                                if (skip) continue;
                                 SpellObject ob = new SpellObject
                                 {
                                     Spell = Spell.ExplosiveTrap,
@@ -2220,49 +2247,44 @@ namespace Server.MirEnvir
                 #endregion
 
                 #region BattleCry
-
                 case Spell.BattleCry:
                     location = (Point)data[2];
 
-                    for (int y = location.Y - 2; y <= location.Y + 2; y++)
+                    int startX = Math.Max(location.X - 2, 0);
+                    int endX = Math.Min(location.X + 2, Width - 1);
+                    int startY = Math.Max(location.Y - 2, 0);
+                    int endY = Math.Min(location.Y + 2, Height - 1);
+
+                    int randomValue = Envir.Random.Next(100);
+
+                    for (int y = startY; y <= endY; y++)
                     {
-                        if (y < 0) continue;
-                        if (y >= Height) break;
-
-                        for (int x = location.X - 2; x <= location.X + 2; x++)
+                        for (int x = startX; x <= endX; x++)
                         {
-                            if (x < 0) continue;
-                            if (x >= Width) break;
-
                             cell = GetCell(x, y);
+                            if (!cell.Valid || cell.Objects == null || cell.Objects.Count == 0) continue;
 
-                            if (!cell.Valid || cell.Objects == null) continue;
-
-                            for (int i = 0; i < cell.Objects.Count; i++)
+                            foreach (var target in cell.Objects)
                             {
-                                MapObject target = cell.Objects[i];
                                 if (target.Race != ObjectType.Monster) continue;
 
-                                if (magic.Level == 0)
+                                int threshold = magic.Level switch
                                 {
-                                    if (Envir.Random.Next(60) >= 4) continue;
-                                }
-                                else if (magic.Level == 1)
-                                {
-                                    if (Envir.Random.Next(45) >= 3) continue;
-                                }
-                                else if (magic.Level == 2)
-                                {
-                                    if (Envir.Random.Next(30) >= 2) continue;
-                                }
-                                else if (magic.Level == 3)
-                                {
-                                    if (Envir.Random.Next(15) >= 1) continue;
-                                }
+                                    0 => 90, // 90% chance of failure (10% success)
+                                    1 => 70, // 70% chance of failure (30% success)
+                                    2 => 50, // 50% chance of failure (50% success)
+                                    3 => 30, // 30% chance of failure (70% success)
+                                    _ => 100 // Default case, should not occur
+                                };
+
+
+                                if (randomValue > threshold) continue;
+
 
                                 if (((MonsterObject)target).Info.CoolEye == 100) continue;
                                 target.Target = player;
                                 target.OperateTime = 0;
+
                                 train = true;
                             }
                         }
@@ -2460,20 +2482,51 @@ namespace Server.MirEnvir
             get { return Attribute == CellAttribute.Walk; }
         }
 
-        public List<MapObject> Objects;
+        public List<MapObject> Objects = new List<MapObject>();
         public CellAttribute Attribute;
         public sbyte FishingAttribute = -1;
 
         public void Add(MapObject mapObject)
         {
-            if (Objects == null) Objects = new List<MapObject>();
+            if (mapObject == null)
+            {
+                ReportCellIssue("Attempted to add a null MapObject to a Cell.");
+                return;
+            }
+
+            if (Objects.Contains(mapObject))
+            {
+                ReportCellIssue($"Duplicate MapObject add detected for ObjectID {mapObject.ObjectID}.");
+                return;
+            }
 
             Objects.Add(mapObject);
         }
         public void Remove(MapObject mapObject)
         {
-            Objects.Remove(mapObject);
-            if (Objects.Count == 0) Objects = null;
+            if (mapObject == null)
+            {
+                ReportCellIssue("Attempted to remove a null MapObject from a Cell.");
+                return;
+            }
+
+            if (!Objects.Remove(mapObject))
+            {
+                ReportCellIssue($"Failed to remove MapObject {mapObject.ObjectID} from Cell collection.");
+            }
+            // DO NOT set Objects = null; keep the list to avoid re-alloc
+        }
+
+        private static void ReportCellIssue(string message)
+        {
+            try
+            {
+                throw new System.InvalidOperationException(message);
+            }
+            catch (System.Exception ex)
+            {
+                MessageQueue.Instance.Enqueue(ex);
+            }
         }
     }
     public class MapRespawn
@@ -2505,6 +2558,12 @@ namespace Server.MirEnvir
         {
             MonsterObject ob = MonsterObject.GetMonster(Monster);
             if (ob == null) return true;
+
+            MonsterType type = Settings.MonsterRarityEnabled
+                ? MonsterRarityData.Roll(RandomProvider.GetThreadRandom())
+                : MonsterType.Normal;
+
+            ob.SetMonsterType(type);
             return ob.Spawn(this);
         }
 

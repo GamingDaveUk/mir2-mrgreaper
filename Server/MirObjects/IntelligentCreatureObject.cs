@@ -1,3 +1,4 @@
+using System.Drawing;
 ﻿using Server.MirDatabase;
 using Server.MirEnvir;
 using S = ServerPackets;
@@ -69,7 +70,7 @@ namespace Server.MirObjects
 
         public override string Name
         {
-            get { return Master == null ? CustomName : (Dead ? CustomName : string.Format("{0}_{1}'s Pet", CustomName, Master.Name)); }
+            get { return Master == null ? CustomName : (Dead ? CustomName : GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.CustomNameMastersPet), CustomName, Master.Name)); }
             set { throw new NotSupportedException(); }
         }
         protected override bool CanAttack
@@ -84,6 +85,8 @@ namespace Server.MirObjects
         {
             get { return ObjectType.Creature; }
         }
+
+        public override bool IgnoresNoPetRestriction => true;
 
 
         public IntelligentCreatureObject(MonsterInfo info) : base(info)
@@ -135,7 +138,7 @@ namespace Server.MirObjects
 
             if (Fullness == 0)//unable to operate with food level 0
             {
-                CreatureTimedSay("I'm starving!!.");
+                CreatureTimedSay(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.IAmStarving));
                 return;
             }
 
@@ -457,10 +460,16 @@ namespace Server.MirObjects
             }
 
             bool remove = false;
-            if (TargetList[0] == null) remove = true;
-            if (TargetList[0].Race != ObjectType.Item) remove = true;
-            if (TargetList[0].Owner != null && TargetList[0].Owner != this && TargetList[0].Owner != Master && !IsMasterGroupMember(TargetList[0].Owner)) remove = true;
-            if (remove || TargetListTargetClean || TargetList[0].CurrentMap != CurrentMap)
+            MapObject targ = TargetList[0];
+            if (targ == null)
+                remove = true;
+            else
+            {
+                if (targ.CurrentMap != CurrentMap) remove = true;
+                if (targ.Race != ObjectType.Item) remove = true;
+                if (targ.Owner != null && targ.Owner != this && targ.Owner != Master && !IsMasterGroupMember(targ.Owner)) remove = true;
+            }
+            if (remove || TargetListTargetClean)
             {
                 TargetList.RemoveAt(0);
                 TargetListTargetClean = false;
@@ -468,7 +477,7 @@ namespace Server.MirObjects
                 return;
             }
 
-            Target = TargetList[0];
+            Target = targ;
 
             if (Target.CurrentLocation == CurrentLocation || (!CheckAndMoveTo(Target.CurrentLocation) && Functions.InRange(CurrentLocation, Target.CurrentLocation, 1)))
             {
@@ -577,15 +586,16 @@ namespace Server.MirObjects
         {
             if (Dead || Master == null) return;
 
-            Cell cell = CurrentMap.GetCell(Target.CurrentLocation);
-            if (!cell.Valid || cell.Objects == null) return;
+            if (!CurrentMap.ValidPoint(location)) return;
+            Cell cell = CurrentMap.GetCell(location);
+            if (cell.Objects == null) return;
 
 
             int count = cell.Objects.Count;
 
             for (int i = 0; i < count; i++)
             {
-                PickUpItem(Target.CurrentLocation);
+                PickUpItem(location);
             }
         }
 
@@ -593,8 +603,9 @@ namespace Server.MirObjects
         {
             if (Dead || Master == null) return;
 
+            if (!CurrentMap.ValidPoint(location)) return;
             Cell cell = CurrentMap.GetCell(location);
-            if (!cell.Valid || cell.Objects == null) return;
+            if (cell.Objects == null) return;
             for (int i = 0; i < cell.Objects.Count; i++)
             {
                 MapObject ob = cell.Objects[i];
@@ -610,11 +621,11 @@ namespace Server.MirObjects
 
                     if (item.Item.Info.ShowGroupPickup && IsMasterGroupMember(Master))
                         for (int j = 0; j < Master.GroupMembers.Count; j++)
-                            Master.GroupMembers[j].ReceiveChat(Name + " Picked up: {" + item.Item.FriendlyName + "}", ChatType.Hint);
+                            Master.GroupMembers[j].ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.FriendlyPickedUpItem), Name, item.Item.FriendlyName), ChatType.Hint);
 
                     if (item.Item.Info.Grade == ItemGrade.Mythical || item.Item.Info.Grade == ItemGrade.Legendary || item.Item.Info.Grade == ItemGrade.Heroic)
                     {
-                        Master.ReceiveChat("Pet Picked up: {" + item.Item.FriendlyName + "}", ChatType.Hint);
+                        Master.ReceiveChat(GameLanguage.ServerTextMap.GetLocalization((ServerTextKeys.PetPickedUp), item.Item.FriendlyName), ChatType.Hint);
                         ((PlayerObject)Master).Enqueue(new S.IntelligentCreaturePickup { ObjectID = ObjectID });
                     }
 
@@ -688,8 +699,8 @@ namespace Server.MirObjects
             if (Fullness >= 10000) return;
             FullnessTicker = Envir.Time + FullnessDelay;
             Fullness += amount;
-            if (Fullness < CreatureRules.MinimalFullness) CreatureSay("*Hmmm*");
-            else CreatureSay("*Burp*");
+            if (Fullness < CreatureRules.MinimalFullness) CreatureSay(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.PetHmmm));
+            else CreatureSay(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.PetBurp));
             if (Fullness > 10000) Fullness = 10000;
         }
 
@@ -702,7 +713,7 @@ namespace Server.MirObjects
                 FullnessTicker = Envir.Time + FullnessDelay;
                 Fullness -= amount;
                 if (Fullness < 0) Fullness = 0;
-                if (Fullness < CreatureRules.MinimalFullness) CreatureTimedSay("*Me Hungry*");
+                if (Fullness < CreatureRules.MinimalFullness) CreatureTimedSay(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.PetHungry));
             }
         }
 
@@ -771,7 +782,7 @@ namespace Server.MirObjects
 
         public override void ReceiveChat(string text, ChatType type)
         {
-            if (type == ChatType.WhisperIn) CreatureSay("What?");
+            if (type == ChatType.WhisperIn) CreatureSay(GameLanguage.ServerTextMap.GetLocalization(ServerTextKeys.PetWhat));
         }
 
         public override bool IsAttackTarget(HumanObject attacker)
@@ -840,23 +851,9 @@ namespace Server.MirObjects
 
         public override Packet GetInfo()
         {
-            return new S.ObjectMonster
-            {
-                ObjectID = ObjectID,
-                Name = Name,
-                NameColour = NameColour,
-                Location = CurrentLocation,
-                Image = Info.Image,
-                Direction = Direction,
-                Effect = Info.Effect,
-                AI = Info.AI,
-                Light = Info.Light,
-                Dead = Dead,
-                Skeleton = Harvested,
-                Poison = CurrentPoison,
-                Hidden = Hidden,
-                Extra = Summoned,
-            };
+            var packet=(S.ObjectMonster)base.GetInfo();
+            packet.Extra = Summoned;
+            return packet;
         }
     }
 }
