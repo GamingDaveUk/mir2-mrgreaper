@@ -365,3 +365,13 @@ FodyWeavers.xsd
 /live
 /.idea/.idea.Legend of Mir/.idea
 /.idea/config
+
+# Runtime artifacts created when Server/Client are run with CWD = repo root
+# (the working copies live under live/Server and live/Client instead)
+/Configs
+/Envir
+/Localization
+/Server.MirDB
+/Mir2Config.ini
+/KeyBinds.ini
+/Error.txt

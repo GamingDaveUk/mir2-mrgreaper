@@ -1,0 +1,127 @@
+Mir2 Crystal - Wine / Linux Setup Fixes
+========================================
+
+Record of every fix applied to get the self-contained win-x64 Client and
+Server running under Wine on Linux with an NVIDIA GPU. Verified working:
+the Client renders the game scene (no more black screen) and the Server
+loads its database.
+
+Date:            2026-08-16
+Verified on:     CachyOS (Arch-based), Wine 11.14, NVIDIA RTX 3090
+
+------------------------------------------------------------------------
+ENVIRONMENT
+------------------------------------------------------------------------
+- OS:        CachyOS (Arch-based), Plasma Wayland via Xwayland (DISPLAY=:0)
+- Wine:      11.14  (/usr/bin/wine)
+- GPU:       NVIDIA RTX 3090 (GA102), driver 610.43.3.0, Vulkan OK
+- Display:   5120x1440 (dual 2560x1440)
+- .NET:      net8.0-windows7.0, WinForms
+             (Linux builds need -p:EnableWindowsTargeting=true)
+- Deploy:    live/  (gitignored) -> Server/, Client/, Tools/
+
+------------------------------------------------------------------------
+THE FIXES
+------------------------------------------------------------------------
+
+1) Self-contained win-x64 build   (build.sh)   [committed: b1dfe689]
+   ----------------------------------------------------------------
+   build.sh publishes all four projects as self-contained win-x64
+   executables and deploys them into live/:
+       Server        -> live/Server/
+       Client        -> live/Client/
+       LibraryEditor -> live/Tools/LibraryEditor/
+       LibraryViewer -> live/Tools/LibraryViewer/
+   Key publish flags:
+       -r win-x64 --self-contained true
+       -p:EnableWindowsTargeting=true
+   Default configuration is Release.
+   Run:  ./build.sh          (or ./build.sh Debug)
+
+2) d3dx9 DllOverride   --   THE black-screen fix
+   ----------------------------------------------------------------
+   Symptom:  The Client window came up but the whole scene was black.
+   Cause:    The game renders its entire scene through d3dx9 (SlimDX
+             Sprite + Line wrap d3dx9's IDirect3DSprite9 / IDirect3DLine9).
+             Wine's BUILT-IN d3dx9 has Line.Draw as an unimplemented stub
+             (log: "fixme:d3dx:d3dx9_line_Draw ... stub!"), so the back
+             buffer was never drawn -> black screen.
+   Fix:      The real Microsoft d3dx9_43.dll (2.4 MB) was already present
+             in the prefix at:
+                 ~/.wine/drive_c/windows/system32/d3dx9_43.dll
+             but with no DllOverride, Wine loaded its broken builtin.
+             Force Wine to use the native MS DLL:
+
+             wine reg add "HKCU\Software\Wine\DllOverrides" /v d3dx9_43 /t REG_SZ /d "native" /f
+             wine reg add "HKCU\Software\Wine\DllOverrides" /v d3dx9    /t REG_SZ /d "native" /f
+
+   Verify:
+             wine reg query "HKCU\Software\Wine\DllOverrides" | grep -i d3d
+             -> d3dx9    REG_SZ    native
+                d3dx9_43 REG_SZ    native
+
+   Note:     These overrides live in the Wine prefix registry (HKCU), not
+             in the repo. If the prefix is reset, re-apply them.
+
+3) WebView2 runtime   (for the launcher UI)
+   ----------------------------------------------------------------
+   The launcher uses WebView2. The Evergreen runtime was installed into
+   the prefix:
+       v151.0.4129.86
+       ~/.wine/drive_c/Program Files (x86)/Microsoft/EdgeCore/151.0.4129.86/
+
+4) Client config   (live/Client/Mir2Config.ini)
+   ----------------------------------------------------------------
+   The client reads ./Mir2Config.ini from its working directory (Release
+   build; a Debug build would read Mir2Test.ini instead). Patches applied:
+       [Launcher]
+       Enabled=False        ; skip the auto-patcher/launcher, go straight to game
+       Host=https://mirfiles.com/resources/mir2/crystal/patch/
+       [Graphics]
+       FullScreen=False
+       Borderless=False     ; windowed with a visible border (was Borderless=True)
+       AlwaysOnTop=False
+   The window is a fixed 1024x768 (Settings defaults); it is NOT true
+   fullscreen - Borderless only removes the title bar/border.
+
+5) SSL cert workaround for curl
+   ----------------------------------------------------------------
+   curl fails on TLS under this setup unless the CA bundle is pointed at
+   explicitly:
+       SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt curl ...
+   (Used when downloading the WebView2 runtime.)
+
+6) Server DB / config placement
+   ----------------------------------------------------------------
+   The Server reads/writes relative to its CWD:
+       Configs/Setup.ini   (Server/Settings.cs)   - auto-created on first save
+       Server.MirDB        (Server/MirEnvir/Envir.cs) - the game database
+   So run the Server from live/Server/ so its DB and Configs/ live there:
+       cd live/Server && wine Server.exe
+   The working DB is live/Server/Server.MirDB.
+
+------------------------------------------------------------------------
+HOW TO RUN (verified)
+------------------------------------------------------------------------
+Server:
+    cd live/Server
+    wine Server.exe
+
+Client (in a second terminal):
+    cd live/Client
+    wine Client.exe
+
+The Client should now render the game scene (UI borders visible), and the
+Server should load its database.
+
+------------------------------------------------------------------------
+NOTES / KNOWN STATE
+------------------------------------------------------------------------
+- live/ is gitignored; the working DB + configs live there, not in the repo.
+- Stale runtime artifacts from an earlier run-from-repo-root remain at the
+  repo root (Configs/, Envir/, Error.txt, KeyBinds.ini, Localization/,
+  Mir2Config.ini, Server.MirDB). They are superseded by the live/ copies
+  and are gitignored.
+- DXVK is NOT installed; the builtin d3d9 + native d3dx9 combo works for
+  now. If rendering regresses, install DXVK and set d3d9=native as a
+  fallback.
